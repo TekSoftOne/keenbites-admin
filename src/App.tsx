@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render } from 'react-dom';
+import './assets/styles/scss/custom.scss';
+import { Layout } from './layout';
 
-import Counter from './Counter';
-
-render(<Counter />, document.getElementById('main'));
+render(<Layout />, document.getElementById('main'));
