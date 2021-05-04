@@ -10,6 +10,8 @@ import { Login } from './login';
 import { Main } from './main';
 import Layout from './layout';
 import { ExpiredRequestPage } from './pages/expired-requests';
+import { MediasPage } from './pages/medias';
+import { ProfilesPage } from './pages/profiles';
 
 export const App = () => (
     <div>
@@ -23,6 +25,8 @@ export const App = () => (
                     path='/expired-requests'
                     component={ExpiredRequestPage}
                 />
+                <Route path='/medias' component={MediasPage} />
+                <Route path='/profiles' component={ProfilesPage} />
             </Switch>
         </Router>
     </div>

@@ -3,7 +3,7 @@ import { ExpiredRequestComponent } from '../expired-requests/expired-requests-co
 import Layout from '../layout';
 export const ExpiredRequestPage: FC = () => {
     return (
-        <Layout title='Expired Requests'>
+        <Layout title='Expired Requests' pageName='requests'>
             <ExpiredRequestComponent />
         </Layout>
     );

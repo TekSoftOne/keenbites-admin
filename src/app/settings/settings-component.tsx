@@ -1,6 +1,6 @@
 import { Divider, makeStyles, TextField } from '@material-ui/core';
 import React, { FC } from 'react';
-import { ButtonComponent } from './button-component';
+import { ButtonComponent } from '../components/button-component';
 
 const useStyles = makeStyles((theme) => ({
     root: {

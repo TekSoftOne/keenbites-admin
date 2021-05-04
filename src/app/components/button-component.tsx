@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { FC } from 'react';
 import React from 'react';
+import clsx from 'clsx';
 
 const useStyles = makeStyles({
     root: {
@@ -17,9 +18,11 @@ const useStyles = makeStyles({
 
 type ButtonComponentProps = {
     name: string;
+    style?: any;
 };
 
 export const ButtonComponent: FC<ButtonComponentProps> = (props) => {
     const classes = useStyles();
-    return <Button className={classes.root}>{props.name}</Button>;
+    const className = clsx(classes.root, props.style);
+    return <Button className={className}>{props.name}</Button>;
 };
