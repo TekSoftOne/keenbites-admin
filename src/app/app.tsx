@@ -1,16 +1,31 @@
 import React from 'react';
-import { HashRouter, Redirect, Route } from 'react-router-dom';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,
+} from 'react-router-dom';
 import { auth } from '../authentication/authentication-service';
 import { Login } from './login';
 import { Main } from './main';
+import Layout from './layout';
+import { ExpiredRequestPage } from './pages/expired-requests';
 
 export const App = () => (
     <div>
-        <HashRouter>
-            <Route path='/main'>{auth.isSignedIn ? <Main /> : <Login />}</Route>
-            <Route path='/' exact={true}>
-                <Redirect to={{ pathname: '/main' }} />
-            </Route>
-        </HashRouter>
+        <Router>
+            <Switch>
+                <Route path='/main'>
+                    {auth.isSignedIn ? <Main /> : <Login />}
+                </Route>
+                <Layout>
+                    <Route path='/' exact component={Main} />
+                    <Route
+                        path='/expired-requests'
+                        component={ExpiredRequestPage}
+                    />
+                </Layout>
+            </Switch>
+        </Router>
     </div>
 );
