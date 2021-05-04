@@ -55,6 +55,7 @@ const styles = (theme: any) => ({
 
 type LayoutProps = {
     classes?: any;
+    title: string;
 };
 
 const Layout: FC<LayoutProps> = (props) => {
@@ -71,7 +72,7 @@ const Layout: FC<LayoutProps> = (props) => {
                 >
                     <Toolbar>
                         <Typography variant='h6' color='inherit' noWrap>
-                            Title
+                            {props.title}
                         </Typography>
                         <div style={{ display: 'flex', flex: 1 }} />
                         <Typography>Hello, Joseph</Typography>

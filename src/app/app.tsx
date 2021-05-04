@@ -18,13 +18,11 @@ export const App = () => (
                 <Route path='/main'>
                     {auth.isSignedIn ? <Main /> : <Login />}
                 </Route>
-                <Layout>
-                    <Route path='/' exact component={Main} />
-                    <Route
-                        path='/expired-requests'
-                        component={ExpiredRequestPage}
-                    />
-                </Layout>
+                <Route path='/' exact component={Main} />
+                <Route
+                    path='/expired-requests'
+                    component={ExpiredRequestPage}
+                />
             </Switch>
         </Router>
     </div>
