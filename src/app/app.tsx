@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import jwt from 'jwt-decode';
 import {
     BrowserRouter as Router,
     Switch,
@@ -20,7 +21,12 @@ export const App = () => {
         undefined | boolean
     >(undefined);
 
-    const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+    const {
+        isAuthenticated,
+        user,
+        isLoading,
+        getAccessTokenSilently,
+    } = useAuth0();
 
     useEffect(() => {
         if (!isLoading) {
@@ -28,33 +34,17 @@ export const App = () => {
         }
     }, [isLoading, isAuthenticated]);
 
-    useEffect(() => {
-        const saveToken = async () => {
-            const token = await getAccessTokenSilently();
-            saveAuth0Session(token);
-        };
-
-        if (isUserAuthenticated) {
-            saveToken();
-        }
-    }, [isUserAuthenticated]);
-
     return (
-        <div>
-            <Router>
-                <Switch>
-                    <Route path='/'>
-                        {isUserAuthenticated === false ? <Login /> : <Main />}
-                    </Route>
-
-                    <Route
-                        path='/expired-requests'
-                        component={ExpiredRequestPage}
-                    />
-                    <Route path='/medias' component={MediasPage} />
-                    <Route path='/profiles' component={ProfilesPage} />
-                </Switch>
-            </Router>
-        </div>
+        <Router>
+            <Switch>
+                <Route exact path='/' component={Main}></Route>
+                <Route
+                    path='/expired-requests'
+                    component={ExpiredRequestPage}
+                />
+                <Route path='/medias' component={MediasPage} />
+                <Route path='/profiles' component={ProfilesPage} />
+            </Switch>
+        </Router>
     );
 };

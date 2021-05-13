@@ -19,10 +19,15 @@ const useStyles = makeStyles({
 type ButtonComponentProps = {
     name: string;
     style?: any;
+    onPress?: any;
 };
 
 export const ButtonComponent: FC<ButtonComponentProps> = (props) => {
     const classes = useStyles();
     const className = clsx(classes.root, props.style);
-    return <Button className={className}>{props.name}</Button>;
+    return (
+        <Button onClick={props.onPress} className={className}>
+            {props.name}
+        </Button>
+    );
 };
