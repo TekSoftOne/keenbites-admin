@@ -17,6 +17,7 @@ import { AppContext } from './app-context';
 import { NavigationsComponent } from './components/navigations';
 import PageContentComponent from './page-content';
 import { drawerWidth } from './constants';
+import { UserLogo } from './components/user-logo';
 
 // https://material-ui.com/demos/drawers/#full-height-navigation
 
@@ -80,7 +81,7 @@ const Layout: FC<LayoutProps> = (props) => {
                                 {props.title}
                             </Typography>
                             <div style={{ display: 'flex', flex: 1 }} />
-                            <Typography>Hello, Joseph</Typography>
+                            <UserLogo />
                         </Toolbar>
                     </AppBar>
 
