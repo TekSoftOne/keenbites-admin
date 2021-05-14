@@ -33,11 +33,18 @@ export interface ErrorResponseData {
 }
 
 export type SiteSettingStatus = {
-    value: number;
+    value: string;
     isValid: boolean;
 };
 
 export type SettingsComponentResult = {
+    max_time_to_answer_hrs: number;
+    answer_repurchase_rate: number;
+    commission_rate: number;
+    max_answer_size_mins: number;
+};
+
+export type SettingsComponentForm = {
     max_time_to_answer_hrs: number;
     answer_repurchase_rate: number;
     commission_rate: number;
