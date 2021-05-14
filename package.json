@@ -4,8 +4,8 @@
   "description": "Keenbites Admin Pages",
   "main": "index.js",
   "scripts": {
-    "start:dev": "parcel src/index.html --no-source-maps",
-    "start": "parcel src/index.html --no-source-maps"
+    "start:dev": "ENVIRONMENT=development parcel src/index.html --no-source-maps",
+    "build": "ENVIRONMENT=production tsc --noEmit && parcel build src/index.html --public-url ./ --no-source-maps"
   },
   "keywords": [],
   "author": "",
@@ -16,8 +16,10 @@
     "@material-ui/data-grid": "^4.0.0-alpha.27",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/styles": "^4.11.4",
+    "@types/node": "^15.0.3",
     "axios": "^0.21.1",
     "clsx": "^1.1.1",
+    "dotenv": "^9.0.2",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "jwt-decode": "^3.1.2",

@@ -5,10 +5,10 @@ import { App } from './app/app';
 
 render(
     <Auth0Provider
-        domain='dev-teksoft1.au.auth0.com'
-        clientId='ITpW49q8LUbI91c23RDhV8AzPcifyTt7'
+        domain={process.env.domain as any}
+        clientId={process.env.clientId as any}
         redirectUri={window.location.origin}
-        audience={'http://localhost:3000'}
+        audience={process.env.audience as any}
     >
         <App />
     </Auth0Provider>,

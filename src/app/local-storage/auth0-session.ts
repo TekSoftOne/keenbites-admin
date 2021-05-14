@@ -1,5 +1,5 @@
 const tokenID = 'KB_ADMIN_AUTH0_TOKEN';
-const api = 'http://localhost:3000';
+const api = process.env.api;
 interface ClientDataId {
     id: number;
     auth0user: string;

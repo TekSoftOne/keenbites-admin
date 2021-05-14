@@ -8,7 +8,6 @@ const styles = (theme: any) => ({
     content: {
         flexGrow: 1,
         backgroundColor: '#ffffff',
-        padding: theme.spacing.unit * 3,
     },
 });
 

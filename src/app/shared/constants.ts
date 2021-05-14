@@ -2,7 +2,7 @@ export const getUserRole = (userSession: any) => {
     if (!userSession) {
         return null;
     }
-    const host = `${'http://localhost:3000'}/roles`;
+    const host = `${process.env.api}/roles`;
     const roles: string[] = userSession[host];
 
     let roleName = 'client';
