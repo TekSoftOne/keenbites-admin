@@ -6,17 +6,23 @@ import React, {
 } from 'react';
 
 import Snackbar from '@material-ui/core/Snackbar';
-import { Alert } from '@material-ui/lab';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import { ProfilesPage } from '../pages/profiles';
+import { makeStyles } from '@material-ui/core';
 
 type ToastMessageProps = {
     message: string;
     isErrorUI?: boolean;
 };
 
-const handleClick = (message: any) => () => {
-    alert('sdfds');
-};
+const useStyles = makeStyles((theme) => ({
+    root: {
+        width: '100%',
+        '& > * + *': {
+            marginTop: theme.spacing(10),
+        },
+    },
+}));
 
 export type ToastMessageHandles = {
     triggerNotify: (message: string) => void;
@@ -45,6 +51,8 @@ export const ToastMessage = forwardRef<
         setState({ ...state, open: false });
     };
 
+    const classes = useStyles();
+
     return (
         <div>
             <Snackbar
@@ -55,13 +63,19 @@ export const ToastMessage = forwardRef<
                 message='I love snacks'
                 key={'top' + 'right'}
             >
-                <Alert
-                    onClose={handleClose}
-                    severity='success'
-                    color={isErrorUI ? 'error' : 'info'}
-                >
-                    {state.message}
-                </Alert>
+                <div className={classes.root}>
+                    <Alert
+                        variant='filled'
+                        onClose={handleClose}
+                        severity='success'
+                        color={isErrorUI ? 'error' : 'success'}
+                    >
+                        <AlertTitle>
+                            {isErrorUI ? 'Error' : 'Success'}
+                        </AlertTitle>
+                        {state.message}
+                    </Alert>
+                </div>
             </Snackbar>
         </div>
     );

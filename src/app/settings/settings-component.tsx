@@ -205,7 +205,11 @@ export const SettingsComponent: FC<SettingsComponentProps> = (props) => {
                 <div>
                     <ButtonComponent
                         disabled={!isFormValid}
-                        name='Apply'
+                        name={
+                            handleSubmitAsync.state === 'loading'
+                                ? 'Updating...'
+                                : 'Apply'
+                        }
                         onPress={handleSubmit}
                     />
                 </div>

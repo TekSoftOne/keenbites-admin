@@ -37,6 +37,12 @@ const themeDefault = createMuiTheme({
         secondary: {
             main: '#9F9F9F',
         },
+        success: {
+            main: '#1A4CFF',
+        },
+        error: {
+            main: '#FF8A87',
+        },
     },
 });
 
