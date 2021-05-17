@@ -85,6 +85,57 @@ export type RequestQueryResultItem = {
     purchase: PurchaseResult;
 };
 
+export type AnsweredQueryResultItem = AnswerDetail;
+
+export interface AnsweredQueryResult {
+    items: AnsweredQueryResultItem[];
+    totalItems: number;
+    at: Date;
+}
+
+export type AnswerDetail = {
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    rate: number | null;
+    request: RequestOfAnswerResult;
+    dispute: DisputeResult;
+    media?: MediaItemResult;
+    user?: UserResult;
+    noOfBuy?: number;
+};
+
+export type RequestOfAnswerResult = {
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    question: string;
+    isAnonymous: boolean;
+    price: number;
+    user: UserResult;
+    language: Language;
+    answerer: ProfileResult;
+    answer: AnswerDetail;
+};
+
+export interface AnsweredQuery {
+    question?: string;
+    languageProficency?: string[];
+    profileType?: string;
+    userId?: number;
+    requestId?: number;
+    answererId?: number;
+    pageSkip?: number;
+    pageTake?: number;
+    pricePerQuestionMin?: number;
+    pricePerQuestionMax?: number;
+    showOnlyDisputed?: boolean;
+    status?: string[];
+    includeLibrary?: boolean;
+    ownerIdCheck?: number;
+    includeBlacklisted?: boolean;
+}
+
 export interface Language {
     name: string;
     id: number;
@@ -96,6 +147,10 @@ export interface AnswerItemResult {
     rate: 0;
     dispute?: DisputeResult;
 }
+export type ToogleBlacklistStatus = {
+    id: number | undefined;
+    isBlacklisted: boolean | undefined;
+};
 
 export interface PurchaseResult {
     requestId: number;

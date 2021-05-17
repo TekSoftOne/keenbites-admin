@@ -14,6 +14,16 @@ const useStyles = makeStyles({
     },
 });
 
+const useStylesSecondary = makeStyles({
+    root: {
+        background: 'linear-gradient(45deg, #FF8A87 30%, #FF8A87 90%)',
+        border: 0,
+        borderRadius: 3,
+        boxShadow: '0 3px 5px 2px rgba(0, 0, 0, .2)',
+        color: 'white',
+    },
+});
+
 const useDisabledStyles = makeStyles({
     root: {
         background: 'linear-gradient(45deg, grey 30%, grey 90%)',
@@ -30,11 +40,13 @@ type ButtonComponentProps = {
     onPress?: any;
     disabled?: boolean;
     isSmall?: boolean;
+    isSecondary?: boolean;
 };
 
 export const ButtonComponent: FC<ButtonComponentProps> = (props) => {
-    const classes = useStyles();
+    const classes = props.isSecondary ? useStylesSecondary() : useStyles();
     const disabledClass = useDisabledStyles();
+
     const className = clsx(
         props.disabled ? disabledClass.root : classes.root,
         props.style
