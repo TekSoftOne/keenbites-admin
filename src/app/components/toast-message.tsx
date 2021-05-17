@@ -11,7 +11,6 @@ import { ProfilesPage } from '../pages/profiles';
 import { makeStyles } from '@material-ui/core';
 
 type ToastMessageProps = {
-    message: string;
     isErrorUI?: boolean;
 };
 
@@ -67,7 +66,7 @@ export const ToastMessage = forwardRef<
                     <Alert
                         variant='filled'
                         onClose={handleClose}
-                        severity='success'
+                        severity={isErrorUI ? 'error' : 'success'}
                         color={isErrorUI ? 'error' : 'success'}
                     >
                         <AlertTitle>

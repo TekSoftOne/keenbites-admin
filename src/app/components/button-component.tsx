@@ -11,8 +11,6 @@ const useStyles = makeStyles({
         borderRadius: 3,
         boxShadow: '0 3px 5px 2px rgba(0, 0, 0, .2)',
         color: 'white',
-        height: 48,
-        padding: '0 30px',
     },
 });
 
@@ -23,8 +21,6 @@ const useDisabledStyles = makeStyles({
         borderRadius: 3,
         boxShadow: '0 3px 5px 2px rgba(0, 0, 0, .2)',
         color: 'white',
-        height: 48,
-        padding: '0 30px',
     },
 });
 
@@ -33,6 +29,7 @@ type ButtonComponentProps = {
     style?: any;
     onPress?: any;
     disabled?: boolean;
+    isSmall?: boolean;
 };
 
 export const ButtonComponent: FC<ButtonComponentProps> = (props) => {
@@ -44,6 +41,7 @@ export const ButtonComponent: FC<ButtonComponentProps> = (props) => {
     );
     return (
         <Button
+            size={props.isSmall ? 'small' : 'medium'}
             onClick={props.onPress}
             className={className}
             disabled={props.disabled ? props.disabled : false}

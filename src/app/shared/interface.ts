@@ -54,3 +54,197 @@ export type SettingsComponentForm = {
 export type SettingsComponentProps = {
     data: SettingsComponentResult;
 };
+
+export interface RequestQuery {
+    clientId?: number;
+    expertId?: number;
+    status?: string[];
+    pageSkip?: number;
+    pageTake?: number;
+    expiredDate?: number;
+}
+
+export interface RequestQueryResult {
+    items: RequestQueryResultItem[];
+    totalItems: number;
+    at: Date;
+}
+
+export type RequestQueryResultItem = {
+    id: number;
+    question: string;
+    user: UserResult;
+    requestStatus: RequestStatusResult;
+    isAnonymous: true;
+    answerer: ProfileDetail;
+    language: Language;
+    price: number;
+    answer?: AnswerItemResult;
+    createdAt: Date;
+    updatedAt: Date;
+    purchase: PurchaseResult;
+};
+
+export interface Language {
+    name: string;
+    id: number;
+}
+
+export interface AnswerItemResult {
+    id: number;
+    media: MediaItemResult;
+    rate: 0;
+    dispute?: DisputeResult;
+}
+
+export interface PurchaseResult {
+    requestId: number;
+    orderRef: string;
+    customerId?: string;
+    amount: number;
+    currency: string;
+    billingAddress: BillingAddressForm | null;
+}
+export interface BillingAddressForm {
+    address: string;
+    state: string;
+    city: string;
+    country: string;
+    postcode: string;
+    constactNumber: string;
+}
+
+export interface DisputeResult {
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    reason: string;
+}
+
+export interface MediaItemResult {
+    id: number;
+    language: Language;
+    link: string;
+    description: string;
+    isKeptInLibrary: boolean;
+    isBlacklisted: boolean;
+    deviceLocation: string;
+    uploaded: boolean;
+    answerRate?: AnswerRateResult;
+    answers?: AnswerResultShorten[];
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface AnswerResultShorten {
+    id: number;
+    user: UserResult;
+}
+
+export type AnswerRateResult = {
+    id: number;
+    averageRate: number;
+    numberOfPurchases: number;
+};
+
+export interface UserResult {
+    id: number;
+    auth0Id: string;
+    purchaseInformation: PurchaseInformation;
+    roles: Role[];
+    questionerClient: ClientResult;
+    questionerExpert: ProfileResult;
+}
+
+export interface ProfileResult extends ProfileDetail {}
+
+export interface PurchaseInformation {
+    id: number;
+    address: string;
+    state: string;
+    city: string;
+    postcode: string;
+    country: string;
+    contactNumber: string;
+}
+
+export interface ClientResult {
+    user: UserResult;
+    aboutMe: string;
+    name: string;
+    title: string;
+    profilePictureLink: string;
+    deletedAt: Date | null;
+}
+
+export type ProfileDetail = {
+    id: number;
+    languages: Language[];
+    subjects: Subject[];
+    profileType: ProfileType;
+    deletedAt: Date;
+    name: string;
+    title: string;
+    price: number;
+    isPayWhatYouWant: boolean;
+    introVideoLink: string;
+    profilePictureLink: string;
+    profileId: string;
+    headLine: string;
+    aboutMe: string;
+    facebook: string;
+    linkedIn: string;
+    instagram: string;
+    youTube: string;
+    at: string;
+    numberOfPurchases: number | null;
+    averageRate: number | null;
+    introductoryMessage: 'string';
+};
+
+export interface RefundStatus {
+    status?: string;
+    failureReason?: string;
+}
+
+export enum RequestStatusType {
+    requested = 'requested',
+    expired = 'expired',
+    answered = 'answered',
+    cancelled = 'cancelled',
+    declined = 'declined',
+}
+
+export enum RefundStatuses {
+    pending = 'pending',
+    succeeded = 'succeeded',
+    failed = 'failed',
+}
+
+export interface RequestItemResult {
+    id: number;
+    question: string;
+    user: UserResult;
+    requestStatus: RequestStatusResult;
+    isAnonymous: true;
+    answerer: ProfileDetail;
+    language: Language;
+    price: number;
+    answer?: AnswerItemResult;
+    createdAt: Date;
+    updatedAt: Date;
+    purchase: PurchaseResult;
+}
+
+export interface Subject {
+    name: string;
+    id: number;
+}
+export interface ProfileType {
+    name: string;
+    id: number;
+}
+export interface RequestStatusResult {
+    name: string;
+    id: number;
+}

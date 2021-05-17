@@ -143,7 +143,7 @@ const Layout: FC<LayoutProps> = (props) => {
                 <NavigationsComponent />
             </Drawer>
             <PageContentComponent pageName={props.pageName}>
-                {props.children}
+                <div style={{ marginLeft: 15 }}>{props.children}</div>
             </PageContentComponent>
         </div>
     );
