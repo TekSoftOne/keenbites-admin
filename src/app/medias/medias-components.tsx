@@ -88,6 +88,12 @@ const headCells = [
         disablePadding: false,
         label: 'AnswerText',
     },
+    {
+        id: 'toogleBlacklist',
+        numeric: false,
+        disablePadding: false,
+        label: '',
+    },
 ];
 
 function EnhancedTableHead(props: any) {
@@ -283,15 +289,30 @@ export const MediasComponent: FC = () => {
                             : answer.request.user.questionerClient.name,
                         answer.request.question,
                         answer?.media?.description as any,
-                        id === blacklistToogledItem.id
-                            ? blacklistToogledItem.isBlacklisted
-                            : (answer?.media?.isBlacklisted as any),
+                        answer?.media?.isBlacklisted as any,
                         answer.request.answerer.name
                     );
                 });
             setDataRows(tableData);
         }
-    }, [getMedias.state, blacklistToogledItem]);
+    }, [getMedias.state]);
+
+    useEffect(() => {
+        const changedData = dataRows.map((row) =>
+            createData(
+                row.id,
+                row.user,
+                row.question,
+                row.answerText,
+                row.id === blacklistToogledItem.id
+                    ? (blacklistToogledItem.isBlacklisted as any)
+                    : row.isBlacklisted,
+                row.answerer
+            )
+        );
+
+        setDataRows(changedData);
+    }, [blacklistToogledItem]);
 
     const handleRequestSort = (event: any, property: any) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -424,7 +445,14 @@ export const MediasComponent: FC = () => {
                                                 {row.answerer}
                                             </TableCell>
                                             <TableCell align='left' width='50'>
-                                                {row.isBlacklisted.toString()}
+                                                <Checkbox
+                                                    color='primary'
+                                                    checked={row.isBlacklisted}
+                                                    inputProps={{
+                                                        'aria-label':
+                                                            'primary checkbox',
+                                                    }}
+                                                />
                                             </TableCell>
                                             <TableCell align='left'>
                                                 {row.question}

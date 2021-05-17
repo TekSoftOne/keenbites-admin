@@ -48,7 +48,6 @@ export const BlacklistComponent: FC<BlacklistComponentProps> = (props) => {
 
     useEffect(() => {
         setDefaultButtonName(isBlacklist ? 'Unblacklist' : 'Blacklist');
-        console.log(isBlacklist ? 'Unblacklist' : 'Blacklist');
     }, [isBlacklist]);
 
     useEffect(() => {
