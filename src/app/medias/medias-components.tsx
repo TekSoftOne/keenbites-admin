@@ -7,6 +7,7 @@ import { useAsyncState } from '../data-services/async-state';
 import { CustomSpinner } from '../components/custom-spinner';
 import { getSiteSettings } from '../data-services/site-settings-resolver';
 import {
+    getAnswer,
     queryAnswers,
     toggleBlackList,
 } from '../data-services/answers-resolver';
@@ -14,6 +15,9 @@ import { ToggleComponent } from './blacklist-component';
 
 import { TableAdvanced } from '../table/table-advanced';
 import { ToogleStatus } from '../shared/interface';
+import { SimpleDialog } from '../dialog/simple-dialog';
+import { ButtonComponent } from '../components/button-component';
+import { MediaDetail } from './media-detail';
 
 const headCells = [
     {
@@ -65,12 +69,15 @@ export const MediasComponent: FC = () => {
     const [dataRows, setDataRows] = useState<MediaRow[]>([]);
 
     const getSiteSettingsAsync = useAsyncState(() => getSiteSettings(), []);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const getMedias = useAsyncState(async () => {
         if (getSiteSettingsAsync.state === 'resolved') {
             return queryAnswers({ includeBlacklisted: true });
         }
     }, [getSiteSettingsAsync.state]);
+
+    const [mediaId, setMediaId] = useState<number | undefined>(undefined);
 
     useEffect(() => {
         if (getMedias.state === 'resolved' && getMedias.result) {
@@ -92,6 +99,12 @@ export const MediasComponent: FC = () => {
             setDataRows(tableData);
         }
     }, [getMedias.state]);
+
+    const loadMediaDetailAsync = useAsyncState(async () => {
+        if (mediaId !== undefined) {
+            return getAnswer(mediaId);
+        }
+    }, [mediaId]);
 
     const handleRowItem = (rows: MediaRow[]) => {
         return rows.map((row: MediaRow, index: number) => {
@@ -134,6 +147,15 @@ export const MediasComponent: FC = () => {
                     </TableCell>
                     <TableCell align='left'>{row.question}</TableCell>
                     <TableCell align='left'>{row.answerText}</TableCell>
+                    <TableCell align='left'>
+                        <ButtonComponent
+                            name='Open Media Answer'
+                            onPress={() => {
+                                setMediaId(row.id);
+                                setIsDialogOpen(true);
+                            }}
+                        ></ButtonComponent>
+                    </TableCell>
                 </TableRow>
             );
         });
@@ -168,6 +190,31 @@ export const MediasComponent: FC = () => {
         <>
             {getMedias.state === 'resolved' ? view : <></>}
             {getMedias.state === 'loading' ? <CustomSpinner /> : <></>}
+            <SimpleDialog
+                header='Media'
+                isOpen={isDialogOpen}
+                emitIsOpen={(isOpen) => {
+                    setIsDialogOpen(isOpen);
+                    setMediaId(undefined);
+                }}
+            >
+                <div>
+                    {loadMediaDetailAsync.state === 'resolved' &&
+                    loadMediaDetailAsync.result &&
+                    loadMediaDetailAsync.result.media ? (
+                        <MediaDetail
+                            media={loadMediaDetailAsync.result.media}
+                        />
+                    ) : (
+                        <span>Media is not founded</span>
+                    )}
+                    {loadMediaDetailAsync.state === 'loading' ? (
+                        <CustomSpinner />
+                    ) : (
+                        <></>
+                    )}
+                </div>
+            </SimpleDialog>
         </>
     );
 };

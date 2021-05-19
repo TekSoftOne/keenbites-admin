@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios';
 import {
     AnsweredQuery,
     AnsweredQueryResult,
+    AnsweredQueryResultItem,
     MediaItemResult,
 } from '../shared/interface';
 import { request } from './axios';
@@ -29,4 +30,16 @@ export const toggleBlackList = async (mediaId: number): Promise<boolean> => {
             return response.data;
         })
         .then((data: MediaItemResult) => data.isBlacklisted);
+};
+
+export const getAnswer = async (
+    answerId: number
+): Promise<AnsweredQueryResultItem> => {
+    return await request({
+        method: 'get',
+        url: `${process.env.api}/answers/${answerId}`,
+        timeout: 30000, // 10 seconds timeout,
+    }).then((response: AxiosResponse) => {
+        return response.data;
+    });
 };

@@ -325,3 +325,30 @@ export interface ProfileQueryResult {
     items: ProfileQueryResultItem[];
     totalItems: number;
 }
+
+export type AudioPlayerProps = {
+    url: string;
+};
+
+export interface WindowSize {
+    innerWidth: number;
+    innerHeight: number;
+}
+
+export type MediaPlayerState = {
+    playing: boolean;
+    seeking: boolean;
+    played: number;
+    loaded: number;
+    loadedSeconds: number;
+    playedSeconds: number;
+    volume: number;
+    muted: boolean;
+};
+
+export type MediaProgressState = {
+    played: number;
+    loaded: number;
+    loadedSeconds: number;
+    playedSeconds: number;
+};
