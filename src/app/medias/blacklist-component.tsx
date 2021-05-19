@@ -1,54 +1,58 @@
+import { Checkbox } from '@material-ui/core';
 import React, { FC, useEffect, useState } from 'react';
 import { ButtonComponent } from '../components/button-component';
 import { toggleBlackList } from '../data-services/answers-resolver';
 import { useAsyncState } from '../data-services/async-state';
-import { ToogleBlacklistStatus } from '../shared/interface';
+import { ToogleStatus } from '../shared/interface';
 
-type BlacklistComponentProps = {
-    isBlacklist: boolean;
-    mediaId: number;
-    completedEmit: (status: ToogleBlacklistStatus) => void;
+type ToggleComponentProps = {
+    isTrue: boolean;
+    id: number;
+    completedEmit?: (status: ToogleStatus) => void;
+    handleDataUpdate: () => Promise<boolean>;
 };
 
-export const BlacklistComponent: FC<BlacklistComponentProps> = (props) => {
-    const [
-        toggleConfirmed,
-        setToggleConfirmed,
-    ] = useState<ToogleBlacklistStatus>({
+export const ToggleComponent: FC<ToggleComponentProps> = (props) => {
+    const [toggleConfirmed, setToggleConfirmed] = useState<ToogleStatus>({
         id: undefined,
-        isBlacklisted: undefined,
+        isTrue: undefined,
     });
 
     const [defaultButtonName, setDefaultButtonName] = useState(
-        props.isBlacklist ? 'Unblacklist' : 'Blacklist'
+        props.isTrue ? 'Unblacklist' : 'Blacklist'
     );
 
-    const [isBlacklist, setIsBlacklist] = useState(props.isBlacklist);
+    const [isTrue, setIsTrue] = useState(props.isTrue);
 
     const [buttonName, setButtonName] = useState(defaultButtonName);
 
     const blacklistAsync = useAsyncState(async () => {
         if (
             toggleConfirmed.id !== undefined &&
-            toggleConfirmed.isBlacklisted !== undefined
+            toggleConfirmed.isTrue !== undefined
         ) {
-            return toggleBlackList(props.mediaId);
+            return props.handleDataUpdate();
         }
     }, [toggleConfirmed]);
 
     useEffect(() => {
-        if (blacklistAsync.state === 'resolved' && blacklistAsync.result) {
-            setIsBlacklist(!isBlacklist);
-            props.completedEmit({
-                id: props.mediaId,
-                isBlacklisted: !isBlacklist,
-            });
+        if (
+            blacklistAsync.state === 'resolved' &&
+            blacklistAsync.result !== undefined
+        ) {
+            console.log(blacklistAsync.result);
+            setIsTrue(blacklistAsync.result);
+            props.completedEmit &&
+                props.completedEmit({
+                    id: props.id,
+                    isTrue: blacklistAsync.result,
+                });
         }
     }, [blacklistAsync.state]);
 
     useEffect(() => {
-        setDefaultButtonName(isBlacklist ? 'Unblacklist' : 'Blacklist');
-    }, [isBlacklist]);
+        setDefaultButtonName(isTrue ? 'Unblacklist' : 'Blacklist');
+    }, [isTrue]);
 
     useEffect(() => {
         if (blacklistAsync.state === 'loading') {
@@ -59,16 +63,20 @@ export const BlacklistComponent: FC<BlacklistComponentProps> = (props) => {
     }, [defaultButtonName, blacklistAsync.state]);
 
     return (
-        <ButtonComponent
-            name={buttonName}
-            isSmall={true}
-            isSecondary={!isBlacklist}
-            onPress={() =>
-                setToggleConfirmed({
-                    id: props.mediaId,
-                    isBlacklisted: !isBlacklist,
-                })
-            }
-        ></ButtonComponent>
+        <>
+            <Checkbox
+                color='primary'
+                checked={isTrue}
+                inputProps={{
+                    'aria-label': 'primary checkbox',
+                }}
+                onChange={() =>
+                    setToggleConfirmed({
+                        id: props.id,
+                        isTrue: !isTrue,
+                    })
+                }
+            />
+        </>
     );
 };

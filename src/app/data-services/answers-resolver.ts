@@ -1,5 +1,9 @@
 import { AxiosResponse } from 'axios';
-import { AnsweredQuery, AnsweredQueryResult } from '../shared/interface';
+import {
+    AnsweredQuery,
+    AnsweredQueryResult,
+    MediaItemResult,
+} from '../shared/interface';
 import { request } from './axios';
 
 export const queryAnswers = async (
@@ -15,14 +19,14 @@ export const queryAnswers = async (
     });
 };
 
-export const toggleBlackList = async (
-    mediaId: number
-): Promise<AnsweredQueryResult> => {
+export const toggleBlackList = async (mediaId: number): Promise<boolean> => {
     return await request({
         method: 'patch',
         url: `${process.env.api}/medias/isBlacklisted/${mediaId}`,
         timeout: 30000, // 10 seconds timeout,
-    }).then((response: AxiosResponse) => {
-        return response.data;
-    });
+    })
+        .then((response: AxiosResponse) => {
+            return response.data;
+        })
+        .then((data: MediaItemResult) => data.isBlacklisted);
 };

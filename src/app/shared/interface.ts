@@ -147,9 +147,9 @@ export interface AnswerItemResult {
     rate: 0;
     dispute?: DisputeResult;
 }
-export type ToogleBlacklistStatus = {
+export type ToogleStatus = {
     id: number | undefined;
-    isBlacklisted: boolean | undefined;
+    isTrue: boolean | undefined;
 };
 
 export interface PurchaseResult {
@@ -255,6 +255,8 @@ export type ProfileDetail = {
     numberOfPurchases: number | null;
     averageRate: number | null;
     introductoryMessage: 'string';
+    isMarketPlace: boolean;
+    isBlacklisted: boolean;
 };
 
 export interface RefundStatus {
@@ -302,4 +304,24 @@ export interface ProfileType {
 export interface RequestStatusResult {
     name: string;
     id: number;
+}
+
+export interface ProfilesQuery {
+    search?: string;
+    isFeatured?: boolean;
+    languageProficency?: string[];
+    profileType?: string;
+    profileId?: string;
+    pageSkip?: number;
+    pageTake?: number;
+    pricePerQuestionMin?: number;
+    pricePerQuestionMax?: number;
+    reducePriceRate?: number;
+    includeUnmarketPlace?: boolean;
+    includeBlacklisted?: boolean;
+}
+export type ProfileQueryResultItem = ProfileDetail;
+export interface ProfileQueryResult {
+    items: ProfileQueryResultItem[];
+    totalItems: number;
 }

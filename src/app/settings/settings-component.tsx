@@ -118,7 +118,6 @@ export const SettingsComponent: FC<SettingsComponentProps> = (props) => {
         <div>
             <ToastMessage
                 ref={messageRef}
-                message={'Update succes'}
                 isErrorUI={
                     handleSubmitAsync.state === 'rejected' ? true : false
                 }
