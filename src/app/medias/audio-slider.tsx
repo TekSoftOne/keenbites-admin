@@ -15,72 +15,6 @@ const thumbColor = '#f7f7f7';
 const thumbColorInsideDisabled = '#cccccc';
 const thumbColorInside = primary;
 
-export const PrettoSliderSm = withStyles({
-    root: {
-        //color: 'white',
-        height: 4,
-    },
-    thumb: {
-        height: 16,
-        width: 16,
-        backgroundColor: thumbColorInside,
-        border: `5px solid ${thumbColor}`,
-        marginTop: -6,
-        marginLeft: -2,
-        '&:focus, &:hover, &$active': {
-            boxShadow: '0px 0px 16px 12px rgba(0,0,0,0.05);',
-        },
-    },
-    active: {},
-    valueLabel: {
-        left: 'calc(-50% + 4px)',
-    },
-    track: {
-        height: 4,
-        borderRadius: 4,
-        color: barLeft,
-    },
-    rail: {
-        height: 4,
-        borderRadius: 4,
-        color: barColorReady,
-        opacity: 1,
-    },
-})(Slider);
-
-export const PrettoSliderSmDisabled = withStyles({
-    root: {
-        //color: 'white',
-        height: 4,
-    },
-    thumb: {
-        height: 16,
-        width: 16,
-        backgroundColor: thumbColorInsideDisabled,
-        border: `5px solid ${thumbColor}`,
-        marginTop: -6,
-        marginLeft: -2,
-        '&:focus, &:hover, &$active': {
-            boxShadow: '0px 0px 16px 12px rgba(0,0,0,0.05);',
-        },
-    },
-    active: {},
-    valueLabel: {
-        left: 'calc(-50% + 4px)',
-    },
-    track: {
-        height: 4,
-        borderRadius: 4,
-        color: barLeft,
-    },
-    rail: {
-        height: 4,
-        borderRadius: 4,
-        color: barColor,
-        opacity: 1,
-    },
-})(Slider);
-
 export const PrettoSliderMainDisabled = withStyles({
     root: {
         //color: 'white',
@@ -114,39 +48,6 @@ export const PrettoSliderMainDisabled = withStyles({
     },
 })(Slider);
 
-export const PrettoSliderLoad = withStyles({
-    root: {
-        //color: 'white',
-        height: 8,
-    },
-    thumb: {
-        height: 24,
-        width: 24,
-        backgroundColor: 'transparent',
-        border: `6px solid transparent`,
-        marginTop: -8,
-        marginLeft: -6,
-        '&:focus, &:hover, &$active': {
-            boxShadow: 'inherit',
-        },
-    },
-    active: {},
-    valueLabel: {
-        left: 'calc(-50% + 4px)',
-    },
-    track: {
-        height: 8,
-        borderRadius: 4,
-        color: barLeftLoader,
-    },
-    rail: {
-        height: 8,
-        borderRadius: 4,
-        color: barColor,
-        opacity: 1,
-    },
-})(Slider);
-
 export const PrettoSliderMain = withStyles({
     root: {
         //color: 'white',
@@ -158,7 +59,7 @@ export const PrettoSliderMain = withStyles({
         backgroundColor: thumbColorInside,
         border: `6px solid ${thumbColor}`,
         marginTop: -8,
-        marginLeft: -6,
+        marginLeft: -10,
         '&:focus, &:hover, &$active': {
             boxShadow: `${'0px 0px 16px 12px rgba(0,0,0,0.05);'}`,
         },
@@ -224,7 +125,7 @@ export const VolumeSliderDisabled = withStyles({
         backgroundColor: thumbColorInsideDisabled,
         border: `5px solid ${thumbColor}`,
         marginTop: -6,
-        marginLeft: -2,
+        marginLeft: -12,
         '&:focus, &:hover, &$active': {
             boxShadow: 'none',
         },

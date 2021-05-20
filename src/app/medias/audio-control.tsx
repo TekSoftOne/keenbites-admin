@@ -5,14 +5,17 @@ import { ControlPause } from './control-pause';
 import {
     PrettoSliderMain,
     PrettoSliderMainDisabled,
-    PrettoSliderSm,
-    PrettoSliderSmDisabled,
     VolumeSlider,
     VolumeSliderDisabled,
 } from './audio-slider';
 import { MediaPlayerState } from '../shared/interface';
-import { useScreenSize } from './screen-size';
-import { Box, Button, createStyles, makeStyles } from '@material-ui/core';
+import {
+    Box,
+    Button,
+    createStyles,
+    makeStyles,
+    Typography,
+} from '@material-ui/core';
 
 type AudioControlsProps = {
     onPlayPause: any;
@@ -39,7 +42,6 @@ export const AudioControls: FC<AudioControlsProps> = (props) => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
             }}
-            className='d-flex flex-grow-1 justify-content-between align-items-center  mt-3 mt-lg-0'
         >
             <div
                 style={{ display: 'flex', alignItems: 'center', width: '100%' }}
@@ -91,11 +93,11 @@ export const AudioControls: FC<AudioControlsProps> = (props) => {
                 )}
             </div>
 
-            <Box
-                m={1}
-                style={{ whiteSpace: 'nowrap', fontSize: 11 }}
-                className={classes.elapsedTime}
-            >{`${props.elapsedTime} / ${props.totalDuration}`}</Box>
+            <Box className={classes.elapsedTime}>
+                <Typography
+                    style={{ whiteSpace: 'nowrap', fontSize: 11 }}
+                >{`${props.elapsedTime} / ${props.totalDuration}`}</Typography>
+            </Box>
             <Box
                 style={{
                     display: 'flex',
@@ -146,7 +148,7 @@ const useStyles = makeStyles((theme) =>
             marginRight: theme.spacing(1),
         },
         elapsedTime: {
-            marginLeft: '25px',
+            marginLeft: '15px',
         },
     })
 );

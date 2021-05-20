@@ -52,6 +52,12 @@ const headCells = [
         disablePadding: false,
         label: 'Answer Text',
     },
+    {
+        id: 'buttonViewAnswer',
+        numeric: false,
+        disablePadding: false,
+        label: '',
+    },
 ];
 
 type MediaRow = {
