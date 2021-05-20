@@ -18,6 +18,7 @@ import { ToogleStatus } from '../shared/interface';
 import { SimpleDialog } from '../dialog/simple-dialog';
 import { ButtonComponent } from '../components/button-component';
 import { MediaDetail } from './media-detail';
+import { Checkbox, Typography } from '@material-ui/core';
 
 const headCells = [
     {
@@ -39,6 +40,12 @@ const headCells = [
         numeric: false,
         disablePadding: false,
         label: 'Blacklisted',
+    },
+    {
+        id: 'isUploaded',
+        numeric: false,
+        disablePadding: false,
+        label: 'Uploaded',
     },
     {
         id: 'question',
@@ -67,6 +74,7 @@ type MediaRow = {
     answerer: string;
     answerText: string;
     isBlacklisted: boolean;
+    isUploaded: boolean;
 };
 
 export const MediasComponent: FC = () => {
@@ -99,6 +107,7 @@ export const MediasComponent: FC = () => {
                         answer.request.question,
                         answer?.media?.description as any,
                         answer?.media?.isBlacklisted as any,
+                        answer?.media?.uploaded as any,
                         answer.request.answerer.name
                     );
                 });
@@ -151,9 +160,19 @@ export const MediasComponent: FC = () => {
                             isTrue={row.isBlacklisted}
                         ></ToggleComponent>
                     </TableCell>
+                    <TableCell align='left' width='50'>
+                        <Checkbox
+                            color='primary'
+                            disabled
+                            checked={row.isUploaded}
+                            inputProps={{
+                                'aria-label': 'primary checkbox',
+                            }}
+                        />
+                    </TableCell>
                     <TableCell align='left'>{row.question}</TableCell>
                     <TableCell align='left'>{row.answerText}</TableCell>
-                    <TableCell align='left'>
+                    <TableCell align='left' width='200'>
                         <ButtonComponent
                             name='Open Media Answer'
                             onPress={() => {
@@ -175,9 +194,18 @@ export const MediasComponent: FC = () => {
         question: string,
         answerText: string,
         isBlacklisted: boolean,
+        isUploaded: boolean,
         answerer: string
     ): MediaRow => {
-        return { id, user, question, answerText, answerer, isBlacklisted };
+        return {
+            id,
+            user,
+            question,
+            answerText,
+            answerer,
+            isBlacklisted,
+            isUploaded,
+        };
     };
 
     const isSelected = (id: number) => selected.indexOf(id) !== -1;
@@ -205,14 +233,19 @@ export const MediasComponent: FC = () => {
                 }}
             >
                 <div>
-                    {loadMediaDetailAsync.state === 'resolved' &&
-                    loadMediaDetailAsync.result &&
-                    loadMediaDetailAsync.result.media ? (
-                        <MediaDetail
-                            media={loadMediaDetailAsync.result.media}
-                        />
+                    {loadMediaDetailAsync.state === 'resolved' ? (
+                        <>
+                            {loadMediaDetailAsync.result &&
+                            loadMediaDetailAsync.result.media ? (
+                                <MediaDetail
+                                    media={loadMediaDetailAsync.result.media}
+                                />
+                            ) : (
+                                <Typography>Media is not founded</Typography>
+                            )}
+                        </>
                     ) : (
-                        <span>Media is not founded</span>
+                        <></>
                     )}
                     {loadMediaDetailAsync.state === 'loading' ? (
                         <CustomSpinner />
