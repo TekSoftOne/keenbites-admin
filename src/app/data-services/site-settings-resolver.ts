@@ -11,6 +11,15 @@ export const getSiteSettings = async (): Promise<SettingsComponentResult> => {
     }).then((res) => res.data);
 };
 
+export const getSiteSettingsAllDate = async (): Promise<
+    SettingsComponentResult[]
+> => {
+    return await request({
+        method: 'get',
+        url: `${process.env.api}/site-configs/all`,
+    }).then((res) => res.data);
+};
+
 export const updateSiteSettings = async (
     data: SettingsComponentForm
 ): Promise<SettingsComponentResult> => {

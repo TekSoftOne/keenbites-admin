@@ -38,13 +38,16 @@ export type SiteSettingStatus = {
 };
 
 export type SettingsComponentResult = {
+    id: number;
     max_time_to_answer_hrs: number;
     answer_repurchase_rate: number;
     commission_rate: number;
     max_answer_size_mins: number;
+    createdAt: Date;
 };
 
 export type SettingsComponentForm = {
+    id: number;
     max_time_to_answer_hrs: number;
     answer_repurchase_rate: number;
     commission_rate: number;

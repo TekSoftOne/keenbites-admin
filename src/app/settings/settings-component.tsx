@@ -8,6 +8,7 @@ import { updateSiteSettings } from '../data-services/site-settings-resolver';
 import {
     SettingsComponentForm,
     SettingsComponentProps,
+    SettingsComponentResult,
     SiteSettingStatus,
 } from '../shared/interface';
 
@@ -66,6 +67,7 @@ export const SettingsComponent: FC<SettingsComponentProps> = (props) => {
     const handleSubmitAsync = useAsyncState(async () => {
         if (submit === true) {
             const data: SettingsComponentForm = {
+                id: props.data.id,
                 max_time_to_answer_hrs: parseInt(maxTimeToAnswerStatus.value),
                 answer_repurchase_rate: parseFloat(
                     answerRepurchaseRateStatus.value
@@ -207,7 +209,9 @@ export const SettingsComponent: FC<SettingsComponentProps> = (props) => {
                         name={
                             handleSubmitAsync.state === 'loading'
                                 ? 'Updating...'
-                                : 'Apply'
+                                : props.data.id > 0
+                                ? 'Update'
+                                : 'Insert'
                         }
                         onPress={handleSubmit}
                     />
