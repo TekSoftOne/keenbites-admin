@@ -99,6 +99,9 @@ export const RefundDisputedComponent: FC<RefundDisputeComponentProps> = (
 
     const view = (
         <ButtonComponent
+            disabled={
+                props.purchase.answer.dispute.disputeStatus.name !== 'ongoing'
+            }
             isSmall={true}
             name={buttonText}
             onPress={() => setRefundConfirmed(true)}

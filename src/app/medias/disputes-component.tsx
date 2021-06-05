@@ -79,6 +79,12 @@ const headCells = [
         disablePadding: false,
         label: '',
     },
+    {
+        id: 'buttonRefund',
+        numeric: false,
+        disablePadding: false,
+        label: '',
+    },
 ];
 
 type AnswerRow = {
@@ -100,9 +106,6 @@ export const DisputesComponent: FC = () => {
     const [refundedItem, setRefundedItem] = useState<undefined | number>(
         undefined
     );
-    const [currentPurchase, setCurrentPurchase] = useState<
-        undefined | PurchaseForDisputeResultItem
-    >(undefined);
 
     const getSiteSettingsAsync = useAsyncState(() => getSiteSettings(), []);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -111,7 +114,7 @@ export const DisputesComponent: FC = () => {
         if (getSiteSettingsAsync.state === 'resolved') {
             return getDisputedPurchases();
         }
-    }, [getSiteSettingsAsync.state]);
+    }, [getSiteSettingsAsync.state, refundedItem]);
 
     const [answerId, setAnswerId] = useState<number | undefined>(undefined);
 
@@ -254,13 +257,12 @@ export const DisputesComponent: FC = () => {
                 <div>
                     {loadMediaDetailAsync.state === 'resolved' ? (
                         <>
-                            {loadMediaDetailAsync.result &&
-                            loadMediaDetailAsync.result.media ? (
+                            {loadMediaDetailAsync.result ? (
                                 <MediaDetail
                                     media={loadMediaDetailAsync.result.media}
                                 />
                             ) : (
-                                <Typography>Media is not founded</Typography>
+                                <></>
                             )}
                         </>
                     ) : (

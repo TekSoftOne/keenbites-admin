@@ -236,17 +236,11 @@ export const MediasComponent: FC = () => {
                 }}
             >
                 <div>
-                    {loadMediaDetailAsync.state === 'resolved' ? (
-                        <>
-                            {loadMediaDetailAsync.result &&
-                            loadMediaDetailAsync.result.media ? (
-                                <MediaDetail
-                                    media={loadMediaDetailAsync.result.media}
-                                />
-                            ) : (
-                                <Typography>Media is not founded</Typography>
-                            )}
-                        </>
+                    {loadMediaDetailAsync.state === 'resolved' &&
+                    loadMediaDetailAsync.result ? (
+                        <MediaDetail
+                            media={loadMediaDetailAsync.result.media}
+                        />
                     ) : (
                         <></>
                     )}

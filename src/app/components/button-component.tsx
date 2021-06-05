@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import { FC } from 'react';
 import React from 'react';
 import clsx from 'clsx';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles({
     root: {
@@ -58,7 +59,9 @@ export const ButtonComponent: FC<ButtonComponentProps> = (props) => {
             className={className}
             disabled={props.disabled ? props.disabled : false}
         >
-            {props.name}
+            <Typography style={{ whiteSpace: 'nowrap' }}>
+                {props.name}
+            </Typography>
         </Button>
     );
 };
