@@ -7,9 +7,11 @@ import AudiotrackTwoToneIcon from '@material-ui/icons/AudiotrackTwoTone';
 import PermContactCalendarTwoToneIcon from '@material-ui/icons/PermContactCalendarTwoTone';
 import { NavLink } from './nav-link';
 import { useAppContext } from '../app-context';
+import QuestionAnswerTwoToneIcon from '@material-ui/icons/QuestionAnswerTwoTone';
 
 export const NavigationsComponent: FC = () => {
     const getColor = (pageName: string) => {
+        console.log(appContext.currentPage);
         return appContext.currentPage === pageName ? 'primary' : 'secondary';
     };
     const appContext = useAppContext();
@@ -26,6 +28,11 @@ export const NavigationsComponent: FC = () => {
             </NavLink>
             <NavLink to='/profiles' label='Profiles'>
                 <PermContactCalendarTwoToneIcon color={getColor('profiles')} />
+            </NavLink>
+            <NavLink to='/disputed-answers' label='Disputed Answers'>
+                <QuestionAnswerTwoToneIcon
+                    color={getColor('disputed answers')}
+                />
             </NavLink>
         </List>
     );

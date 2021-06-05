@@ -72,9 +72,9 @@ export const TableAdvanced: FC<TableAdvancedProps> = (props) => {
         setOrderBy(property);
     };
 
-    const emptyRows =
-        rowsPerPage -
-        Math.min(rowsPerPage, props.dataRows.length - page * rowsPerPage);
+    // const emptyRows =
+    //     rowsPerPage -
+    //     Math.min(rowsPerPage, props.dataRows.length - page * rowsPerPage);
 
     return (
         <Paper className={classes.paper}>
@@ -104,7 +104,7 @@ export const TableAdvanced: FC<TableAdvancedProps> = (props) => {
                             )
                         )}
 
-                        {emptyRows > 0 && (
+                        {/* {emptyRows > 0 && (
                             <TableRow
                                 style={{
                                     height: 53 * emptyRows,
@@ -112,7 +112,7 @@ export const TableAdvanced: FC<TableAdvancedProps> = (props) => {
                             >
                                 <TableCell colSpan={6} />
                             </TableRow>
-                        )}
+                        )} */}
                     </TableBody>
                 </Table>
             </TableContainer>

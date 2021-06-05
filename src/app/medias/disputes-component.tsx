@@ -14,11 +14,18 @@ import {
 import { ToggleComponent } from './blacklist-component';
 
 import { TableAdvanced } from '../table/table-advanced';
-import { ToogleStatus } from '../shared/interface';
+import {
+    DisputeStatus,
+    DisputeStatusType,
+    PurchaseForDisputeResultItem,
+    ToogleStatus,
+} from '../shared/interface';
 import { SimpleDialog } from '../dialog/simple-dialog';
 import { ButtonComponent } from '../components/button-component';
 import { MediaDetail } from './media-detail';
 import { Checkbox, Typography } from '@material-ui/core';
+import { getDisputedPurchases } from '../data-services/purchase-resolver';
+import { RefundDisputedComponent } from '../expired-requests/refund-disputed-component';
 
 const headCells = [
     {
@@ -36,17 +43,12 @@ const headCells = [
         label: 'Respondent',
     },
     {
-        id: 'isBlacklisted',
+        id: 'disputeStatus',
         numeric: false,
         disablePadding: false,
-        label: 'Blacklisted',
+        label: 'Dispute Status',
     },
-    {
-        id: 'isUploaded',
-        numeric: false,
-        disablePadding: false,
-        label: 'Uploaded',
-    },
+
     {
         id: 'question',
         numeric: false,
@@ -54,10 +56,22 @@ const headCells = [
         label: 'Question',
     },
     {
+        id: 'amount',
+        numeric: true,
+        disablePadding: false,
+        label: 'Amount',
+    },
+    {
         id: 'answerText',
         numeric: false,
         disablePadding: false,
         label: 'Answer Text',
+    },
+    {
+        id: 'reason',
+        numeric: false,
+        disablePadding: false,
+        label: 'Reason',
     },
     {
         id: 'buttonViewAnswer',
@@ -67,65 +81,68 @@ const headCells = [
     },
 ];
 
-type MediaRow = {
+type AnswerRow = {
     id: number;
+    purchase: PurchaseForDisputeResultItem;
     user: string;
     question: string;
+    amount: number;
     answerer: string;
     answerText: string;
-    isBlacklisted: boolean;
-    isUploaded: boolean;
+    disputeStatus: DisputeStatus;
+    reason: string;
 };
 
-export const MediasComponent: FC = () => {
+export const DisputesComponent: FC = () => {
     const classes = useStyles();
     const [selected, setSelected] = useState<number[]>([]);
-    const [dataRows, setDataRows] = useState<MediaRow[]>([]);
+    const [dataRows, setDataRows] = useState<AnswerRow[]>([]);
+    const [refundedItem, setRefundedItem] = useState<undefined | number>(
+        undefined
+    );
+    const [currentPurchase, setCurrentPurchase] = useState<
+        undefined | PurchaseForDisputeResultItem
+    >(undefined);
 
     const getSiteSettingsAsync = useAsyncState(() => getSiteSettings(), []);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    const getMedias = useAsyncState(async () => {
+    const getPurchases = useAsyncState(async () => {
         if (getSiteSettingsAsync.state === 'resolved') {
-            return queryAnswers({
-                includeBlacklisted: true,
-                onlyFirstBuy: true,
-            });
+            return getDisputedPurchases();
         }
     }, [getSiteSettingsAsync.state]);
 
-    const [mediaId, setMediaId] = useState<number | undefined>(undefined);
+    const [answerId, setAnswerId] = useState<number | undefined>(undefined);
 
     useEffect(() => {
-        if (getMedias.state === 'resolved' && getMedias.result) {
-            const tableData = getMedias.result.items
-                .filter((a) => a.media)
-                .map((answer) => {
-                    const id = answer?.media?.id as any;
-                    return createData(
-                        id,
-                        answer.request.user.questionerExpert
-                            ? answer.request.user.questionerExpert.name
-                            : answer.request.user.questionerClient.name,
-                        answer.request.question,
-                        answer?.media?.description as any,
-                        answer?.media?.isBlacklisted as any,
-                        answer?.media?.uploaded as any,
-                        answer.request.answerer.name
-                    );
-                });
+        if (getPurchases.state === 'resolved' && getPurchases.result) {
+            const tableData = getPurchases.result.items.map((purchase) => {
+                const id = purchase.answer.id;
+                return createData(
+                    id,
+                    purchase,
+                    purchase.client.name,
+                    purchase.request.question,
+                    purchase.amount,
+                    purchase.answer.media.description as any,
+                    purchase.answer.dispute.disputeStatus.name,
+                    purchase.request.answerer.name,
+                    purchase.answer.dispute.reason
+                );
+            });
             setDataRows(tableData);
         }
-    }, [getMedias.state]);
+    }, [getPurchases.state]);
 
     const loadMediaDetailAsync = useAsyncState(async () => {
-        if (mediaId !== undefined) {
-            return getAnswer(mediaId);
+        if (answerId !== undefined) {
+            return getAnswer(answerId);
         }
-    }, [mediaId]);
+    }, [answerId]);
 
-    const handleRowItem = (rows: MediaRow[]) => {
-        return rows.map((row: MediaRow, index: number) => {
+    const handleRowItem = (rows: AnswerRow[]) => {
+        return rows.map((row: AnswerRow, index: number) => {
             const isItemSelected = isSelected(row.id);
             const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -154,35 +171,30 @@ export const MediasComponent: FC = () => {
                     <TableCell align='left' padding='none' width='150'>
                         {row.answerer}
                     </TableCell>
-                    <TableCell align='left' width='50'>
-                        <ToggleComponent
-                            handleDataUpdate={async () =>
-                                toggleBlackList(row.id)
-                            }
-                            id={row.id}
-                            isTrue={row.isBlacklisted}
-                        ></ToggleComponent>
+                    <TableCell align='left' width='150'>
+                        {row.disputeStatus}
                     </TableCell>
-                    <TableCell align='left' width='50'>
-                        <Checkbox
-                            color='primary'
-                            disabled
-                            checked={row.isUploaded}
-                            inputProps={{
-                                'aria-label': 'primary checkbox',
-                            }}
-                        />
-                    </TableCell>
+
                     <TableCell align='left'>{row.question}</TableCell>
+                    <TableCell align='left'>{row.amount}</TableCell>
                     <TableCell align='left'>{row.answerText}</TableCell>
+                    <TableCell align='left'>{row.reason}</TableCell>
                     <TableCell align='left' width='200'>
                         <ButtonComponent
                             name='Open Media Answer'
                             onPress={() => {
-                                setMediaId(row.id);
+                                setAnswerId(row.id);
                                 setIsDialogOpen(true);
                             }}
                         ></ButtonComponent>
+                    </TableCell>
+                    <TableCell align='left' width='150'>
+                        <RefundDisputedComponent
+                            purchase={row.purchase}
+                            refundedEmit={(id) => {
+                                setRefundedItem(id);
+                            }}
+                        />
                     </TableCell>
                 </TableRow>
             );
@@ -193,21 +205,25 @@ export const MediasComponent: FC = () => {
 
     const createData = (
         id: number,
+        purchase: PurchaseForDisputeResultItem,
         user: string,
         question: string,
+        amount: number,
         answerText: string,
-        isBlacklisted: boolean,
-        isUploaded: boolean,
-        answerer: string
-    ): MediaRow => {
+        disputeStatus: DisputeStatus,
+        answerer: string,
+        reason: string
+    ): AnswerRow => {
         return {
             id,
+            purchase,
             user,
             question,
+            amount,
             answerText,
             answerer,
-            isBlacklisted,
-            isUploaded,
+            disputeStatus,
+            reason,
         };
     };
 
@@ -225,14 +241,14 @@ export const MediasComponent: FC = () => {
 
     return (
         <>
-            {getMedias.state === 'resolved' ? view : <></>}
-            {getMedias.state === 'loading' ? <CustomSpinner /> : <></>}
+            {getPurchases.state === 'resolved' ? view : <></>}
+            {getPurchases.state === 'loading' ? <CustomSpinner /> : <></>}
             <SimpleDialog
                 header='Media'
                 isOpen={isDialogOpen}
                 emitIsOpen={(isOpen) => {
                     setIsDialogOpen(isOpen);
-                    setMediaId(undefined);
+                    setAnswerId(undefined);
                 }}
             >
                 <div>

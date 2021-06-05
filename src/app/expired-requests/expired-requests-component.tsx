@@ -5,7 +5,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { useAsyncState } from '../data-services/async-state';
 import { getExpiredRequests } from '../data-services/requests-resolver';
 import { CustomSpinner } from '../components/custom-spinner';
-import { RefundComponent } from './refund-component';
+import { RefundExpiredComponent } from './refund-expired-component';
 import { getSiteSettings } from '../data-services/site-settings-resolver';
 import { TableAdvanced } from '../table/table-advanced';
 
@@ -137,7 +137,7 @@ export const ExpiredRequestComponent: FC = () => {
                     </TableCell>
                     <TableCell align='left'>{row.question}</TableCell>
                     <TableCell align='right'>
-                        <RefundComponent
+                        <RefundExpiredComponent
                             requestId={row.id}
                             amount={row.amount}
                             refundedEmit={(id) => {

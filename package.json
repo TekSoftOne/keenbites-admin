@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "ENVIRONMENT=development parcel src/index.html --no-source-maps",
-    "build": "ENVIRONMENT=production tsc --noEmit && parcel build src/index.html --public-url ./ --no-source-maps"
+    "build": "rm -rf dist && ENVIRONMENT=production tsc --noEmit && parcel build src/index.html --public-url ./ --no-source-maps"
   },
   "keywords": [],
   "author": "",

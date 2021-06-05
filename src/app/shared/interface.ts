@@ -123,6 +123,7 @@ export interface AnsweredQuery {
     languageProficency?: string[];
     profileType?: string;
     userId?: number;
+    onlyFirstBuy?: boolean;
     requestId?: number;
     answererId?: number;
     pageSkip?: number;
@@ -130,7 +131,8 @@ export interface AnsweredQuery {
     pricePerQuestionMin?: number;
     pricePerQuestionMax?: number;
     showOnlyDisputed?: boolean;
-    status?: string[];
+    status?: RequestStatus[];
+    disputeStatus?: DisputeStatus[];
     includeLibrary?: boolean;
     ownerIdCheck?: number;
     includeBlacklisted?: boolean;
@@ -174,8 +176,13 @@ export interface DisputeResult {
     createdAt: Date;
     updatedAt: Date;
     reason: string;
+    disputeStatus: DisputeStatusItem;
 }
 
+export interface DisputeStatusItem {
+    name: DisputeStatus;
+    id: number;
+}
 export interface MediaItemResult {
     id: number;
     language: Language;
@@ -262,6 +269,23 @@ export type ProfileDetail = {
 export interface RefundStatus {
     status?: string;
     failureReason?: string;
+}
+
+export type RequestStatus = ResponseStatus;
+
+export type ResponseStatus =
+    | 'requested'
+    | 'expired'
+    | 'answered'
+    | 'cancelled'
+    | 'declined';
+
+export type DisputeStatus = 'ongoing' | 'refunded' | 'rejected';
+
+export enum DisputeStatusType {
+    ongoing = 'ongoing',
+    refunded = 'refunded',
+    rejected = 'rejected',
 }
 
 export enum RequestStatusType {
@@ -352,3 +376,104 @@ export type MediaProgressState = {
     loadedSeconds: number;
     playedSeconds: number;
 };
+
+export type PurchaseType = 'paid' | 'refunded';
+
+export interface PurchaseForDisputeResultList {
+    items: PurchaseForDisputeResultItem[];
+    at: Date;
+    totalItems: number;
+}
+
+export interface PurchaseForDisputeResultItem {
+    id: number;
+    createdAt: Date;
+    amount: number;
+    currency: string;
+    customerId: string;
+    orderRef: string;
+    purchaseType: PurchaseType;
+    purchaseInformation: any;
+    request: PurchaseForDisputeRequestResult;
+    client: PurchaseForDisputeClient;
+    answer: PurchaseForDisputeAnswer;
+}
+
+export interface PurchaseForDisputeRequestResult {
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    question: string;
+    isAnonymous: boolean;
+    price: number;
+    user: any;
+    answerer: PurchaseForDisputeAnswerer;
+}
+
+export interface PurchaseForDisputeAnswerer {
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt: Date | null;
+    name: string;
+    title: string;
+    price: string;
+    isPayWhatYouWant: boolean;
+    introVideoLink: string;
+    profilePictureLink: string;
+    profileId: string;
+    headLine: string;
+    aboutMe: string;
+    facebook: string;
+    linkedIn: string;
+    instagram: string;
+    youTube: string;
+    at: string;
+    numberOfPurchases: number | null;
+    averageRate: number | null;
+    introductoryMessage: string;
+    isMarketPlace: boolean;
+    isBlacklisted: boolean;
+    walletId: string;
+}
+
+export interface PurchaseForDisputeClient {
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    aboutMe: string;
+    name: string;
+    title: string;
+    profilePictureLink: string;
+    deletedAt: Date | undefined;
+}
+
+export interface PurchaseForDisputeAnswer {
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    rate: number | null;
+    noOfBuy: number;
+    dispute: PurchaseForDispute;
+    media: PurchaseForDisputeAnswerMedia;
+}
+
+export interface PurchaseForDisputeAnswerMedia {
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    link: string;
+    description: string;
+    isKeptInLibrary: boolean;
+    isBlacklisted: boolean;
+    deviceLocation: string;
+    uploaded: boolean;
+}
+
+export interface PurchaseForDispute {
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    reason: string;
+    disputeStatus: DisputeStatusItem;
+}
