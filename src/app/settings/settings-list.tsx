@@ -70,6 +70,7 @@ type SiteSettingsListProps = {
     selectedSettingsEmit: (
         settings: SettingsComponentResult | undefined
     ) => void;
+    newUpdates: string | undefined;
 };
 export const SiteSettingsList: FC<SiteSettingsListProps> = (props) => {
     const classes = useStyles();
@@ -86,7 +87,7 @@ export const SiteSettingsList: FC<SiteSettingsListProps> = (props) => {
         if (getSiteSettingsAsync.state === 'resolved') {
             return getSiteSettingsAllDate();
         }
-    }, [getSiteSettingsAsync.state]);
+    }, [getSiteSettingsAsync.state, props.newUpdates]);
 
     useEffect(() => {
         if (

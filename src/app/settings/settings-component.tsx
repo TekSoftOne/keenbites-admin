@@ -1,4 +1,4 @@
-import { Divider, makeStyles, TextField } from '@material-ui/core';
+import { Box, Divider, makeStyles, TextField } from '@material-ui/core';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import validator from 'validator';
 import { ButtonComponent } from '../components/button-component';
@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
 export const SettingsComponent: FC<SettingsComponentProps> = (props) => {
     const [isFormValid, setIsFormValid] = useState(false);
     const [submit, setSubmit] = useState<boolean | undefined>(undefined);
+    const [deleteConfirmed, setDeleteConfirmed] = useState<boolean | undefined>(
+        undefined
+    );
     const messageRef = useRef<ToastMessageHandles>(null);
     const [
         maxTimeToAnswerStatus,
@@ -64,6 +67,15 @@ export const SettingsComponent: FC<SettingsComponentProps> = (props) => {
         setSubmit(true);
     };
 
+    const handleDelete = () => {
+        setDeleteConfirmed(true);
+    };
+
+    const handleDeleteAsync = useAsyncState(async () => {
+        if (deleteConfirmed === true) {
+        }
+    }, [deleteConfirmed]);
+
     const handleSubmitAsync = useAsyncState(async () => {
         if (submit === true) {
             const data: SettingsComponentForm = {
@@ -93,6 +105,7 @@ export const SettingsComponent: FC<SettingsComponentProps> = (props) => {
         ) {
             messageRef.current &&
                 messageRef.current.triggerNotify('Updated Successfully!');
+            props.updatedEmit(Date.now().toString());
         }
 
         if (handleSubmitAsync.state === 'rejected') {
@@ -203,7 +216,7 @@ export const SettingsComponent: FC<SettingsComponentProps> = (props) => {
                 </div>
                 <br />
 
-                <div>
+                <div style={{ display: 'flex' }}>
                     <ButtonComponent
                         disabled={!isFormValid}
                         name={
@@ -215,6 +228,18 @@ export const SettingsComponent: FC<SettingsComponentProps> = (props) => {
                         }
                         onPress={handleSubmit}
                     />
+                    {/* {props.data.id > 0 ? (
+                        <Box mx={2}>
+                            <ButtonComponent
+                                isSecondary={true}
+                                disabled={!isFormValid}
+                                name='Delete'
+                                onPress={handleDelete}
+                            />
+                        </Box>
+                    ) : (
+                        <></>
+                    )} */}
                 </div>
             </form>
         </div>

@@ -56,6 +56,7 @@ export type SettingsComponentForm = {
 
 export type SettingsComponentProps = {
     data: SettingsComponentResult;
+    updatedEmit: (uniqueId: string) => void;
 };
 
 export interface RequestQuery {
