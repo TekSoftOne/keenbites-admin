@@ -8,6 +8,7 @@ import PermContactCalendarTwoToneIcon from '@material-ui/icons/PermContactCalend
 import { NavLink } from './nav-link';
 import { useAppContext } from '../app-context';
 import QuestionAnswerTwoToneIcon from '@material-ui/icons/QuestionAnswerTwoTone';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 
 export const NavigationsComponent: FC = () => {
     const getColor = (pageName: string) => {
@@ -33,6 +34,9 @@ export const NavigationsComponent: FC = () => {
                 <QuestionAnswerTwoToneIcon
                     color={getColor('disputed answers')}
                 />
+            </NavLink>
+            <NavLink to='/transfers' label='Transfer Payments'>
+                <MonetizationOnIcon color={getColor('transfer payments')} />
             </NavLink>
         </List>
     );

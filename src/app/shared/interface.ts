@@ -481,3 +481,37 @@ export interface PurchaseForDispute {
     reason: string;
     disputeStatus: DisputeStatusItem;
 }
+
+export interface ReadyTransferitem {
+    userId: number;
+    transfered: number;
+    amount: number;
+    walletId: string;
+    userName: string;
+}
+
+export interface TransferForm {
+    amount: number;
+    currency: string;
+    connectId: string;
+}
+
+export interface TransferResult {
+    id: string; //'tr_1J2yKrK3TH7oyRSDw5WZoVTA';
+    object: string; //'transfer';
+    amount: number;
+    amount_reversed: number;
+    balance_transaction: string; //'txn_1J2yKrK3TH7oyRSDAWAR1vii';
+    created: number; //Unix datetime
+    currency: string; //usd
+    description: null | string;
+    destination: string; //'acct_1J1UKF2f9bS1YLHE';
+    destination_payment: string; //'py_1J2yKr2f9bS1YLHEMGflmBnW';
+    livemode: boolean;
+    metadata: any; //{}
+    reversals: any;
+    reversed: boolean;
+    source_transaction: null | any;
+    source_type: string; //'card';
+    transfer_group: null | any;
+}

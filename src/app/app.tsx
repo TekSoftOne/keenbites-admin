@@ -16,6 +16,7 @@ import { ProfilesPage } from './pages/profiles';
 import { useAuth0 } from '@auth0/auth0-react';
 import { saveAuth0Session } from './local-storage/auth0-session';
 import { DisputedAnswersPage } from './pages/disputed-answers';
+import { TransfersPage } from './pages/transfers';
 
 export const App = () => {
     const [isUserAuthenticated, setIsUserAuthenticated] = useState<
@@ -49,6 +50,7 @@ export const App = () => {
                     path='/disputed-answers'
                     component={DisputedAnswersPage}
                 />
+                <Route path='/transfers' component={TransfersPage} />
             </Switch>
         </Router>
     );
