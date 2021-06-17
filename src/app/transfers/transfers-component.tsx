@@ -3,17 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { useAsyncState } from '../data-services/async-state';
-import { getExpiredRequests } from '../data-services/requests-resolver';
 import { CustomSpinner } from '../components/custom-spinner';
 import { TableAdvanced } from '../table/table-advanced';
-import {
-    getReadyTransfers,
-    transferToConnectUser,
-} from '../data-services/stripe-connect-resolver';
+import { getReadyTransfers } from '../data-services/stripe-connect-resolver';
 import numeral from 'numeral';
 import { numberFormat } from '../shared/constants';
-import { ButtonComponent } from '../components/button-component';
-import { TransferButton } from './transfer-button';
+import TransferButton from './transfer-button';
 
 const headCells = [
     {
@@ -50,6 +45,11 @@ type TransferRow = {
     paid: number;
 };
 
+type TransferAmountItem = {
+    id: number;
+    amount: number;
+};
+
 export const TransferComponent: FC = () => {
     const classes = useStyles();
     const [dataRows, setDataRows] = useState<TransferRow[]>([]);
@@ -61,7 +61,7 @@ export const TransferComponent: FC = () => {
 
     const getReadyTransfersAsync = useAsyncState(async () => {
         return getReadyTransfers();
-    }, []);
+    }, [transferedItem]);
 
     useEffect(() => {
         if (
@@ -128,16 +128,16 @@ export const TransferComponent: FC = () => {
                     <TableCell align='left' padding='none' width='50'>
                         {numeral(row.paid).format(numberFormat)}
                     </TableCell>
-                    <TableCell align='left' padding='none' width='50'>
-                        {numeral(row.amount).format(numberFormat)}
-                    </TableCell>
-                    <TableCell align='right'>
-                        <TransferButton
-                            connectId={row.connectId}
-                            amount={row.amount}
-                            transferedEmit={() => {}}
-                        />
-                    </TableCell>
+                    <TransferButton
+                        key={row.id}
+                        connectId={row.connectId}
+                        amount={row.amount}
+                        transferedEmit={(id) => {
+                            setTransferedItem(id);
+                        }}
+                        paid={row.paid}
+                        userId={row.id}
+                    />
                 </TableRow>
             );
         });

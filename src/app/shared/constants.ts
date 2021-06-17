@@ -14,4 +14,5 @@ export const getUserRole = (userSession: any) => {
 };
 
 export const numberFormat = '0,0.00';
+export const numberFormatParse = '0.00';
 export const numberFormatSummary = '0,0';

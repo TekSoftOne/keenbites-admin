@@ -15,7 +15,7 @@ import logo from '../assets/Logo.svg';
 import { AppContext } from './app-context';
 import { NavigationsComponent } from './components/navigations';
 import PageContentComponent from './page-content';
-import { drawerWidth } from './constants';
+import { colorBlue, drawerWidth } from './constants';
 import { UserLogo } from './components/user-logo';
 import {
     getAuth0Session,
@@ -32,13 +32,13 @@ import { Login } from './login';
 const themeDefault = createMuiTheme({
     palette: {
         primary: {
-            main: '#1A4CFF',
+            main: colorBlue,
         },
         secondary: {
             main: '#9F9F9F',
         },
         success: {
-            main: '#1A4CFF',
+            main: colorBlue,
         },
         error: {
             main: '#FF8A87',

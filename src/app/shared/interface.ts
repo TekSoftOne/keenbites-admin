@@ -496,6 +496,23 @@ export interface TransferForm {
     connectId: string;
 }
 
+export interface TransferHistoryForm {
+    amount: number;
+    currency: string;
+    connectId: string;
+    transferId: string;
+    userId: number;
+}
+
+export interface TransferHistory {
+    id: number;
+    amount: number;
+    currency: string;
+    connectId: string;
+    transferId: string;
+    userId: number;
+}
+
 export interface TransferResult {
     id: string; //'tr_1J2yKrK3TH7oyRSDw5WZoVTA';
     object: string; //'transfer';
