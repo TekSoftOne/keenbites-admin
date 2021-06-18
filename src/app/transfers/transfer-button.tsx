@@ -137,7 +137,7 @@ const TransferButton: FC<TransferButtonProps> = (props) => {
                             ? ''
                             : `The amount must be less than or equal to ${numeral(
                                   props.amount - props.paid
-                              ).format('0,0.00')} and greater than 0`
+                              ).format(numberFormat)} and greater than 0`
                     }
                     InputProps={{
                         classes: {
