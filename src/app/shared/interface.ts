@@ -216,6 +216,7 @@ export type AnswerRateResult = {
 export interface UserResult {
     id: number;
     auth0Id: string;
+    email?: string;
     purchaseInformation: PurchaseInformation;
     roles: Role[];
     questionerClient: ClientResult;
@@ -268,6 +269,7 @@ export type ProfileDetail = {
     introductoryMessage: 'string';
     isMarketPlace: boolean;
     isBlacklisted: boolean;
+    user: UserResult;
 };
 
 export interface RefundStatus {

@@ -8,6 +8,7 @@ import { CustomSpinner } from '../components/custom-spinner';
 import { RefundExpiredComponent } from './refund-expired-component';
 import { getSiteSettings } from '../data-services/site-settings-resolver';
 import { TableAdvanced } from '../table/table-advanced';
+import { RequestQueryResultItem } from '../shared/interface';
 
 const headCells = [
     {
@@ -45,6 +46,7 @@ type ExpiredRequestRow = {
     question: string;
     amount: number;
     answerer: string;
+    request: RequestQueryResultItem;
 };
 
 export const ExpiredRequestComponent: FC = () => {
@@ -81,7 +83,8 @@ export const ExpiredRequestComponent: FC = () => {
                             : request.user.questionerClient.name,
                         request.question,
                         request.price,
-                        request.answerer.name
+                        request.answerer.name,
+                        request
                     )
             );
             setDataRows(tableData.filter((row) => row.id !== refundedItem));
@@ -93,9 +96,10 @@ export const ExpiredRequestComponent: FC = () => {
         user: string,
         question: string,
         amount: number,
-        answerer: string
+        answerer: string,
+        request: RequestQueryResultItem
     ): ExpiredRequestRow => {
-        return { id, user, question, amount, answerer };
+        return { id, user, question, amount, answerer, request };
     };
 
     const isSelected = (id: number) => selected.indexOf(id) !== -1;
@@ -138,8 +142,7 @@ export const ExpiredRequestComponent: FC = () => {
                     <TableCell align='left'>{row.question}</TableCell>
                     <TableCell align='right'>
                         <RefundExpiredComponent
-                            requestId={row.id}
-                            amount={row.amount}
+                            request={row.request}
                             refundedEmit={(id) => {
                                 setRefundedItem(id);
                             }}

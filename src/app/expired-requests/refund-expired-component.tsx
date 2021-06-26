@@ -7,12 +7,23 @@ import {
     getRequestAndPurchase,
     updateRequestStatus,
 } from '../data-services/requests-resolver';
-import { RefundStatuses, RequestStatusType } from '../shared/interface';
+import { getSiteSettings } from '../data-services/site-settings-resolver';
+import { sendMailWithContent } from '../shared/emails/templates/based/send-mail';
+import {
+    getEmailData,
+    TEMPLATE_EMAIL_CONTENT_EXPIRE_EXPERT,
+    TEMPLATE_EMAIL_CONTENT_EXPIRE_USER,
+} from '../shared/emails/templates/based/template-summary';
+import {
+    RefundStatuses,
+    RequestQueryResultItem,
+    RequestStatusType,
+    SettingsComponentResult,
+} from '../shared/interface';
 
 type RefundExpiredComponentProps = {
     refundedEmit: (requestId: number) => void;
-    requestId: number;
-    amount: number;
+    request: RequestQueryResultItem;
 };
 
 export const RefundExpiredComponent: FC<RefundExpiredComponentProps> = (
@@ -22,13 +33,29 @@ export const RefundExpiredComponent: FC<RefundExpiredComponentProps> = (
         undefined
     );
 
+    const [siteSetting, setSiteSetting] = useState<
+        SettingsComponentResult | undefined
+    >(undefined);
+
+    const getSiteSettingsAsync = useAsyncState(() => getSiteSettings(), []);
+
+    useEffect(() => {
+        if (
+            getSiteSettingsAsync.state === 'resolved' &&
+            getSiteSettingsAsync.result
+        ) {
+            setSiteSetting(getSiteSettingsAsync.result);
+        }
+    }, [getSiteSettingsAsync.state]);
+
     const [buttonText, setbuttonText] = useState('Refund');
     const toastMessageRef = useRef<ToastMessageHandles>(null);
 
     const getRequestPurchaseAsync = useAsyncState(
         async () => {
+            debugger;
             if (refundConfirmed === true) {
-                return getRequestAndPurchase(props.requestId);
+                return getRequestAndPurchase(props.request.id);
             }
         },
         [refundConfirmed],
@@ -53,22 +80,66 @@ export const RefundExpiredComponent: FC<RefundExpiredComponentProps> = (
                 RefundStatuses.succeeded
         ) {
             return updateRequestStatus(
-                props.requestId,
+                props.request.id,
                 RequestStatusType.expired
             );
         }
     }, [stripeRefundAndDatabaseRefundHistoryAsync.state]);
 
-    useEffect(() => {
+    const sendEmailAsync = useAsyncState(async () => {
         if (
             updateStatusAsync.state === 'resolved' &&
             updateStatusAsync.result &&
-            updateStatusAsync.result.id
+            updateStatusAsync.result.id &&
+            siteSetting
         ) {
-            props.refundedEmit(props.requestId);
+            const EMAIL_CONTENT_EXPIRE_USER = getEmailData(
+                new TEMPLATE_EMAIL_CONTENT_EXPIRE_USER({
+                    expertName: props.request.answerer.name,
+                    userName: props.request.user.questionerExpert
+                        ? props.request.user.questionerExpert.name
+                        : props.request.user.questionerClient.name,
+                })
+            );
+            const EMAIL_CONTENT_EXPIRE_EXPERT = getEmailData(
+                new TEMPLATE_EMAIL_CONTENT_EXPIRE_EXPERT({
+                    expertName: props.request.answerer.name,
+                    question: props.request.question,
+                    timeToAnswer: `${siteSetting.max_time_to_answer_hrs} hours`,
+                })
+            );
+
+            debugger;
+            if (EMAIL_CONTENT_EXPIRE_USER && props.request.user.email) {
+                await sendMailWithContent(
+                    EMAIL_CONTENT_EXPIRE_USER,
+                    props.request.user.email
+                );
+            }
+
+            if (
+                EMAIL_CONTENT_EXPIRE_EXPERT &&
+                props.request.answerer.user.email
+            ) {
+                await sendMailWithContent(
+                    EMAIL_CONTENT_EXPIRE_EXPERT,
+                    props.request.answerer.user.email
+                );
+            }
+
+            return true;
+        }
+    }, [updateStatusAsync.state, siteSetting]);
+
+    useEffect(() => {
+        if (
+            (sendEmailAsync.state === 'resolved' && sendEmailAsync.result) ||
+            sendEmailAsync.state === 'rejected'
+        ) {
+            props.refundedEmit(props.request.id);
             setRefundConfirmed(undefined);
         }
-    }, [updateStatusAsync.state]);
+    }, [sendEmailAsync.state]);
 
     useEffect(() => {
         if (refundConfirmed === true) {
@@ -112,7 +183,7 @@ export const RefundExpiredComponent: FC<RefundExpiredComponentProps> = (
     }, [updateStatusAsync.state]);
 
     const view =
-        props.amount > 0 ? (
+        props.request.price > 0 ? (
             <ButtonComponent
                 isSmall={true}
                 name={buttonText}
