@@ -9,6 +9,9 @@ import { getReadyTransfers } from '../data-services/stripe-connect-resolver';
 import numeral from 'numeral';
 import { numberFormat } from '../shared/constants';
 import TransferButton from './transfer-button';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { Box } from '@material-ui/core';
 
 const headCells = [
     {
@@ -26,8 +29,18 @@ const headCells = [
         label: 'Connect Id',
     },
 
-    { id: 'amountPaid', numeric: false, disablePadding: true, label: 'Paid' },
-    { id: 'amount', numeric: false, disablePadding: true, label: 'Amount' },
+    {
+        id: 'toBePaid',
+        numeric: false,
+        disablePadding: true,
+        label: 'To be paid',
+    },
+    {
+        id: 'amountTransfer',
+        numeric: false,
+        disablePadding: true,
+        label: 'Amount transfer',
+    },
 
     {
         id: 'transferButton',
@@ -53,6 +66,29 @@ type TransferAmountItem = {
 export const TransferComponent: FC = () => {
     const classes = useStyles();
     const [dataRows, setDataRows] = useState<TransferRow[]>([]);
+    const [selectedDate, handleDateChange] = useState(new Date());
+    const getCurrentMonth = () => {
+        return new Date();
+    };
+    const [transactionMonth, setTransactionMonth] = useState<Date | null>(
+        getCurrentMonth()
+    );
+
+    const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
+    const [toDate, setToDate] = useState<Date | undefined>(undefined);
+
+    useEffect(() => {
+        if (transactionMonth) {
+            const year = transactionMonth.getFullYear();
+            const month = transactionMonth.getMonth();
+
+            setFromDate(new Date(Date.UTC(year, month, 1)));
+            setToDate(new Date(Date.UTC(year, month + 1, 0)));
+
+            console.log(new Date(Date.UTC(year, month, 1)));
+            console.log(new Date(Date.UTC(year, month + 1, 0)));
+        }
+    }, [transactionMonth]);
 
     const [selected, setSelected] = useState<number[]>([]);
     const [transferedItem, setTransferedItem] = useState<undefined | string>(
@@ -60,14 +96,17 @@ export const TransferComponent: FC = () => {
     );
 
     const getReadyTransfersAsync = useAsyncState(async () => {
-        return getReadyTransfers();
-    }, [transferedItem]);
+        if (fromDate && toDate) {
+            return getReadyTransfers(fromDate, toDate);
+        }
+    }, [transferedItem, fromDate, toDate]);
 
     useEffect(() => {
         if (
             getReadyTransfersAsync.state === 'resolved' &&
             getReadyTransfersAsync.result
         ) {
+            debugger;
             const tableData = getReadyTransfersAsync.result.map((transfer) =>
                 createData(
                     transfer.userId,
@@ -79,7 +118,7 @@ export const TransferComponent: FC = () => {
             );
             setDataRows(tableData);
         }
-    }, [getReadyTransfersAsync.state]);
+    }, [getReadyTransfersAsync]);
 
     const createData = (
         id: number,
@@ -125,8 +164,8 @@ export const TransferComponent: FC = () => {
                     <TableCell align='left' padding='none' width='250'>
                         {row.connectId}
                     </TableCell>
-                    <TableCell align='left' padding='none' width='50'>
-                        {numeral(row.paid).format(numberFormat)}
+                    <TableCell align='left' padding='none' width='150'>
+                        {numeral(row.amount - row.paid).format(numberFormat)}
                     </TableCell>
                     <TransferButton
                         key={row.id}
@@ -155,6 +194,20 @@ export const TransferComponent: FC = () => {
 
     return (
         <>
+            <Box>
+                <span>Month</span>
+            </Box>
+            <div>
+                {/* https://reactdatepicker.com/#example-month-picker */}
+                <DatePicker
+                    className='form-control'
+                    selected={transactionMonth as any}
+                    onChange={(date) => setTransactionMonth(date as any)}
+                    dateFormat='MM/yyyy'
+                    showMonthYearPicker
+                    placeholderText='Choose a month...'
+                />
+            </div>
             {getReadyTransfersAsync.state === 'resolved' ? view : <></>}
             {getReadyTransfersAsync.state === 'loading' ? (
                 <CustomSpinner />

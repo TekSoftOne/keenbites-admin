@@ -53,7 +53,6 @@ export const RefundExpiredComponent: FC<RefundExpiredComponentProps> = (
 
     const getRequestPurchaseAsync = useAsyncState(
         async () => {
-            debugger;
             if (refundConfirmed === true) {
                 return getRequestAndPurchase(props.request.id);
             }
@@ -109,7 +108,6 @@ export const RefundExpiredComponent: FC<RefundExpiredComponentProps> = (
                 })
             );
 
-            debugger;
             if (EMAIL_CONTENT_EXPIRE_USER && props.request.user.email) {
                 await sendMailWithContent(
                     EMAIL_CONTENT_EXPIRE_USER,

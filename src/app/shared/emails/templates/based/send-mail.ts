@@ -12,7 +12,6 @@ export const sendMailWithContent = (
     toEmail: string
 ) => {
     const { subject } = templateData;
-    debugger;
 
     return sendMail({
         subject: subject,

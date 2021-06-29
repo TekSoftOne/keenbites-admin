@@ -8,12 +8,20 @@ import {
 } from '../shared/interface';
 import { request } from './axios';
 
-export const getReadyTransfers = async (): Promise<ReadyTransferitem[]> => {
+export const getReadyTransfers = async (
+    fromDate: Date,
+    toDate: Date
+): Promise<ReadyTransferitem[]> => {
     return await request({
         method: 'get',
         url: `${process.env.api}/stripe-connect/report/ready-payments`,
         timeout: 30000, // 30 seconds timeout,
+        params: {
+            fromDate: fromDate,
+            toDate: toDate,
+        },
     }).then((response: AxiosResponse) => {
+        debugger;
         return response.data;
     });
 };
