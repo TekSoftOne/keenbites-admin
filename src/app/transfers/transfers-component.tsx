@@ -9,9 +9,10 @@ import { getReadyTransfers } from '../data-services/stripe-connect-resolver';
 import numeral from 'numeral';
 import { numberFormat } from '../shared/constants';
 import TransferButton from './transfer-button';
+import { Box, Typography } from '@material-ui/core';
+
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Box } from '@material-ui/core';
 
 const headCells = [
     {
@@ -83,7 +84,12 @@ export const TransferComponent: FC = () => {
             const month = transactionMonth.getMonth();
 
             setFromDate(new Date(Date.UTC(year, month, 1)));
-            setToDate(new Date(Date.UTC(year, month + 1, 0)));
+            let toDay = new Date(Date.UTC(year, month + 1, 0));
+
+            let toDayAdd1 = new Date(Date.UTC(year, month + 1, 0));
+            toDayAdd1.setDate(toDay.getDate() + 1);
+
+            setToDate(toDayAdd1);
 
             console.log(new Date(Date.UTC(year, month, 1)));
             console.log(new Date(Date.UTC(year, month + 1, 0)));
@@ -165,7 +171,7 @@ export const TransferComponent: FC = () => {
                         {row.connectId}
                     </TableCell>
                     <TableCell align='left' padding='none' width='150'>
-                        {numeral(row.amount - row.paid).format(numberFormat)}
+                        {numeral(row.amount).format(numberFormat)}
                     </TableCell>
                     <TransferButton
                         key={row.id}
@@ -174,7 +180,6 @@ export const TransferComponent: FC = () => {
                         transferedEmit={(id) => {
                             setTransferedItem(id);
                         }}
-                        paid={row.paid}
                         userId={row.id}
                     />
                 </TableRow>
@@ -194,20 +199,20 @@ export const TransferComponent: FC = () => {
 
     return (
         <>
-            <Box>
-                <span>Month</span>
+            <Box my={2}>
+                <Typography>Month</Typography>
             </Box>
-            <div>
+            <Box my={2}>
                 {/* https://reactdatepicker.com/#example-month-picker */}
                 <DatePicker
-                    className='form-control'
+                    className={classes.DatePickerText}
                     selected={transactionMonth as any}
                     onChange={(date) => setTransactionMonth(date as any)}
                     dateFormat='MM/yyyy'
                     showMonthYearPicker
                     placeholderText='Choose a month...'
                 />
-            </div>
+            </Box>
             {getReadyTransfersAsync.state === 'resolved' ? view : <></>}
             {getReadyTransfersAsync.state === 'loading' ? (
                 <CustomSpinner />
@@ -221,5 +226,9 @@ export const TransferComponent: FC = () => {
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
+    },
+    DatePickerText: {
+        padding: '10px',
+        border: '1px solid #e6e6e6',
     },
 }));

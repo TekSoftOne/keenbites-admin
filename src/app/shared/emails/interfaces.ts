@@ -20,6 +20,7 @@ export interface TemplateParamsNewRequest {
     userName: string;
     expertName: string;
     timeToAnswer: string;
+    isAnonymous: boolean;
 }
 export interface TemplateParamsDecline {
     userName: string;

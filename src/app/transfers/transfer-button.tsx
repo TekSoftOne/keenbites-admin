@@ -27,7 +27,6 @@ import { colorBlue } from '../constants';
 type TransferButtonProps = {
     connectId: string;
     amount: number;
-    paid: number;
     userId: number;
     transferedEmit: (id: string) => void;
     classes?: any;
@@ -43,32 +42,23 @@ const TransferButton: FC<TransferButtonProps> = (props) => {
         setTransferConfirmed(true);
     };
 
+    const calculateAmount = () => {
+        return numeral(props.amount).format(numberFormatParse);
+    };
+
     const [isValid, setIsValid] = useState(false);
 
-    const [amount, setAmount] = useState<string | undefined>(
-        numeral(props.amount - props.paid).format(numberFormatParse)
-    );
+    const [amount, setAmount] = useState<string | undefined>(calculateAmount());
 
     useEffect(() => {
-        if (props.amount && props.paid) {
-            setAmount(
-                numeral(props.amount - props.paid).format(numberFormatParse)
-            );
+        if (props.amount !== undefined) {
+            setAmount(calculateAmount());
         }
-    }, [props.amount, props.paid]);
+    }, [props.amount]);
 
     useEffect(() => {
-        setIsValid(
-            amount !== undefined &&
-                parseFloat(amount) > 0 &&
-                parseFloat(numeral(amount).format(numberFormatParse)) <=
-                    parseFloat(
-                        numeral(props.amount - props.paid).format(
-                            numberFormatParse
-                        )
-                    )
-        );
-    }, [amount, props.amount, props.paid]);
+        setIsValid(amount !== undefined && parseFloat(amount) > 0);
+    }, [amount, props.amount]);
 
     const errorMessageRef = useRef<ToastMessageHandles>(null);
 
@@ -133,11 +123,7 @@ const TransferButton: FC<TransferButtonProps> = (props) => {
                 <TextField
                     error={!isValid}
                     helperText={
-                        isValid
-                            ? ''
-                            : `The amount must be less than or equal to ${numeral(
-                                  props.amount - props.paid
-                              ).format(numberFormat)} and greater than 0`
+                        isValid ? '' : `The amount must be greater than 0`
                     }
                     InputProps={{
                         classes: {

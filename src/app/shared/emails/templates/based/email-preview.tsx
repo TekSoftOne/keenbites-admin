@@ -21,6 +21,7 @@ export const EmailPreviewComponent: FC = () => {
             expertName: 'expertName'.toUpperCase(),
             userName: 'userName'.toUpperCase(),
             timeToAnswer: 'timeToAnswer'.toUpperCase(),
+            isAnonymous: true,
         })
     );
 
@@ -29,6 +30,7 @@ export const EmailPreviewComponent: FC = () => {
             expertName: 'expertName'.toUpperCase(),
             userName: 'userName'.toUpperCase(),
             timeToAnswer: 'timeToAnswer'.toUpperCase(),
+            isAnonymous: true,
         })
     );
 

@@ -51,7 +51,7 @@ export const EMAIL_CONTENT_NEW_REQUEST_EXPERT = (
             <p>
                 <TemplateButton
                     name='Click here to answer'
-                    link={`${process.env.host}${expertHome}`}
+                    link={`${expertHome}`}
                 />
             </p>
             <p>Cheers,</p>
