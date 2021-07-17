@@ -1,4 +1,4 @@
-import { Box, Divider, makeStyles, TextField } from '@material-ui/core';
+import { makeStyles, TextField } from '@material-ui/core';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import validator from 'validator';
 import { ButtonComponent } from '../components/button-component';
@@ -8,7 +8,6 @@ import { updateSiteSettings } from '../data-services/site-settings-resolver';
 import {
     SettingsComponentForm,
     SettingsComponentProps,
-    SettingsComponentResult,
     SiteSettingStatus,
 } from '../shared/interface';
 

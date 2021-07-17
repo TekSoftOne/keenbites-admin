@@ -1,6 +1,4 @@
-import { CircularProgress } from '@material-ui/core';
-import { SystemUpdate } from '@material-ui/icons';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { CustomSpinner } from '../components/custom-spinner';
 import { useAsyncState } from '../data-services/async-state';
 import { getSiteSettings } from '../data-services/site-settings-resolver';
@@ -36,7 +34,6 @@ export const SettingsLoader: FC = () => {
                             ? updatedOrInsertedSuccessItem
                             : 1
                     }
-                    selectedSettingsEmit={(s) => setSelectedSettings(s)}
                     newUpdates={updatedOrInsertedSuccessItem}
                 />
             }

@@ -67,9 +67,6 @@ type SiteSettingsRow = {
 };
 
 type SiteSettingsListProps = {
-    selectedSettingsEmit: (
-        settings: SettingsComponentResult | undefined
-    ) => void;
     newUpdates: string | undefined;
 };
 export const SiteSettingsList: FC<SiteSettingsListProps> = (props) => {
@@ -129,40 +126,20 @@ export const SiteSettingsList: FC<SiteSettingsListProps> = (props) => {
         };
     };
 
-    const isSelected = (id: number) => selected === id;
-
-    const handleClick = (event: any, settings: SettingsComponentResult) => {
-        props.selectedSettingsEmit(settings);
-        setSelected(settings.id !== selected ? settings.id : undefined);
-    };
-
-    useEffect(() => {
-        if (selected === undefined) {
-            props.selectedSettingsEmit(undefined);
-        }
-    }, [selected]);
-
     const handleRowItem = (rows: SiteSettingsRow[]) => {
         return rows.map((row: SiteSettingsRow, index: number) => {
-            const isItemSelected = isSelected(row.id);
             const labelId = `enhanced-table-checkbox-${index}`;
 
             return (
                 <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row)}
                     role='checkbox'
-                    aria-checked={isItemSelected}
+                    aria-checked={false}
                     tabIndex={-1}
                     key={row.id}
-                    selected={isItemSelected}
+                    selected={false}
                 >
-                    <TableCell width='30'>
-                        <Checkbox
-                            checked={isItemSelected}
-                            inputProps={{ 'aria-label': 'secondary checkbox' }}
-                        />
-                    </TableCell>
+                    <TableCell width='30'></TableCell>
                     <TableCell
                         width='50'
                         component='th'
