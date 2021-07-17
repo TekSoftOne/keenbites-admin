@@ -76,8 +76,6 @@ export const SiteSettingsList: FC<SiteSettingsListProps> = (props) => {
         undefined
     );
 
-    const [selected, setSelected] = useState<number | undefined>(undefined);
-
     const getSiteSettingsAsync = useAsyncState(() => getSiteSettings(), []);
 
     const getAllSettingsAsync = useAsyncState(async () => {
@@ -139,9 +137,9 @@ export const SiteSettingsList: FC<SiteSettingsListProps> = (props) => {
                     key={row.id}
                     selected={false}
                 >
-                    <TableCell width='30'></TableCell>
+                    <TableCell width='5'></TableCell>
                     <TableCell
-                        width='50'
+                        width='10'
                         component='th'
                         id={labelId}
                         scope='row'
@@ -149,19 +147,19 @@ export const SiteSettingsList: FC<SiteSettingsListProps> = (props) => {
                     >
                         {row.id}
                     </TableCell>
-                    <TableCell align='left' width='50'>
+                    <TableCell align='left' width='250'>
                         {moment(row.createdAt).format('LLLL')}
                     </TableCell>
-                    <TableCell align='left' width='50'>
+                    <TableCell align='left' width='150'>
                         {row.max_time_to_answer_hrs}
                     </TableCell>
-                    <TableCell align='left' width='50'>
+                    <TableCell align='left' width='100'>
                         {row.answer_repurchase_rate}
                     </TableCell>
-                    <TableCell align='left' width='50'>
+                    <TableCell align='left' width='100'>
                         {row.commission_rate}
                     </TableCell>
-                    <TableCell align='left' width='50'>
+                    <TableCell align='left'>
                         {row.max_answer_size_mins}
                     </TableCell>
                 </TableRow>

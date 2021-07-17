@@ -66,15 +66,6 @@ export const SettingsComponent: FC<SettingsComponentProps> = (props) => {
         setSubmit(true);
     };
 
-    const handleDelete = () => {
-        setDeleteConfirmed(true);
-    };
-
-    const handleDeleteAsync = useAsyncState(async () => {
-        if (deleteConfirmed === true) {
-        }
-    }, [deleteConfirmed]);
-
     const handleSubmitAsync = useAsyncState(async () => {
         if (submit === true) {
             const data: SettingsComponentForm = {
