@@ -1,11 +1,17 @@
-import { emailBodyFormats } from "./email-body-formats";
+import { emailBodyFormats } from './email-body-formats';
 
-import { renderToString } from "react-dom/server";
+import { renderToString } from 'react-dom/server';
 
-export const emailTemplate = (title: string, _body: JSX.Element): string => {
-  const html = emailBodyFormats(renderToString(_body));
+export const emailTemplate = (
+    title: string,
+    _body: JSX.Element,
+    isOnlyBody: boolean
+): string => {
+    const html = emailBodyFormats(renderToString(_body));
 
-  return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    return isOnlyBody
+        ? html
+        : `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:o="urn:schemas-microsoft-com:office:office"

@@ -2,9 +2,12 @@ import { sendMail } from '~/app/data-services/email-resolver';
 import { TemplateItem } from '../../interfaces';
 import { emailTemplate } from './based-template';
 
-export const loadEmailHtml = (templateData: TemplateItem) => {
+export const loadEmailHtml = (
+    templateData: TemplateItem,
+    isOnlyBody = false
+) => {
     const { title, html } = templateData;
-    return emailTemplate(title, html);
+    return emailTemplate(title, html, isOnlyBody);
 };
 
 export const sendMailWithContent = (
@@ -17,6 +20,6 @@ export const sendMailWithContent = (
         subject: subject,
         from: `${process.env.emailFrom}`,
         to: toEmail,
-        html: loadEmailHtml(templateData),
+        html: loadEmailHtml(templateData, true),
     });
 };
