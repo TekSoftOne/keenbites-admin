@@ -46,7 +46,7 @@ const headCells = [
         id: 'commissionRate',
         numeric: false,
         disablePadding: false,
-        label: 'CommissionRate',
+        label: 'Commission Rate',
     },
     {
         id: 'maxAnswerFileSize',
@@ -150,13 +150,13 @@ export const SiteSettingsList: FC<SiteSettingsListProps> = (props) => {
                     <TableCell align='left' width='250'>
                         {moment(row.createdAt).format('LLLL')}
                     </TableCell>
-                    <TableCell align='left' width='150'>
+                    <TableCell align='left' width='200'>
                         {row.max_time_to_answer_hrs}
                     </TableCell>
-                    <TableCell align='left' width='100'>
+                    <TableCell align='left' width='200'>
                         {row.answer_repurchase_rate}
                     </TableCell>
-                    <TableCell align='left' width='100'>
+                    <TableCell align='left' width='200'>
                         {row.commission_rate}
                     </TableCell>
                     <TableCell align='left'>
