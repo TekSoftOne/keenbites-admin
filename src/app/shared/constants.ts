@@ -18,12 +18,12 @@ export const numberFormatParse = '0.00';
 export const numberFormatSummary = '0,0';
 
 export const expertHome = '/my-account/new-requests';
-export const normalUserHome = '/my-account/my-responses';
+export const normalUserHome = '/my-account/my-queries';
 export const signupOrVefifyLink = '/auth-vefify';
 
 export const myAccount = 'my-account';
 export const myAccountLink = '/my-account';
-export const myRespondLink = '/my-account/my-responses';
+export const myRespondLink = '/my-account/my-queries';
 export const myRequestLink = '/my-account/new-requests';
 export const myRespondLinkOtherStatus =
     '/my-account/my-responses?otherStatuses=true';
