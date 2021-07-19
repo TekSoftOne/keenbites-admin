@@ -23,7 +23,7 @@ export const EMAIL_CONTENT_DECLINE_USER = (
             </p>
             <p>
                 You can track your requests under{' '}
-                <TemplateLink name='My responses' link={myRespondLink} />
+                <TemplateLink name='My queries' link={myRespondLink} />
             </p>
             <p>Cheers,</p>
             <p>Team Keenbites</p>

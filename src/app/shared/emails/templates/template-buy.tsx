@@ -18,8 +18,7 @@ export const EMAIL_CONTENT_BUY_USER = (
                 <span style={{ color: '#5b6885' }}>
                     <i>{question}</i>
                 </span>
-                ” under{' '}
-                <TemplateLink name='My responses' link={normalUserHome} />
+                ” under <TemplateLink name='My queries' link={normalUserHome} />
             </p>
             {/* <button links to keenbites.com/response/<id>> Access response </button>\ */}
             <p>

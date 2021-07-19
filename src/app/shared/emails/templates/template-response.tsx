@@ -21,7 +21,7 @@ export const EMAIL_CONTENT_RESPONSE_USER = (
                     <i>{question}</i>
                 </span>
                 ”. To access it, go to{' '}
-                <TemplateLink name='My responses' link={normalUserHome} />
+                <TemplateLink name='My queries' link={normalUserHome} />
             </p>
             {/* <button links to keenbites.com/response/<id>> Access response </button> */}
             <TemplateButton

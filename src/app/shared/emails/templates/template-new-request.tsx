@@ -21,7 +21,7 @@ export const EMAIL_CONTENT_NEW_REQUEST_USER = (
             </p>
             <p>
                 You can keep track of your requests under{' '}
-                <TemplateLink name='My responses' link={myRespondLink} />
+                <TemplateLink name='My queries' link={myRespondLink} />
             </p>
             <p>Cheers,</p>
             <p>Team Keenbites</p>
