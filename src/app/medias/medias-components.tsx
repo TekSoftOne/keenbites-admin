@@ -89,6 +89,7 @@ export const MediasComponent: FC = () => {
         if (getSiteSettingsAsync.state === 'resolved') {
             return queryAnswers({
                 includeBlacklisted: true,
+                includeUnmarketPlace: true,
                 onlyFirstBuy: true,
             });
         }

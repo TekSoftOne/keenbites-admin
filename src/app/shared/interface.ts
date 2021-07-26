@@ -140,6 +140,7 @@ export interface AnsweredQuery {
     includeLibrary?: boolean;
     ownerIdCheck?: number;
     includeBlacklisted?: boolean;
+    includeUnmarketPlace?: boolean;
 }
 
 export interface Language {
