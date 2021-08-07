@@ -21,7 +21,6 @@ export const getReadyTransfers = async (
             toDate: toDate,
         },
     }).then((response: AxiosResponse) => {
-        debugger;
         return response.data;
     });
 };

@@ -112,7 +112,6 @@ export const TransferComponent: FC = () => {
             getReadyTransfersAsync.state === 'resolved' &&
             getReadyTransfersAsync.result
         ) {
-            debugger;
             const tableData = getReadyTransfersAsync.result.map((transfer) =>
                 createData(
                     transfer.userId,

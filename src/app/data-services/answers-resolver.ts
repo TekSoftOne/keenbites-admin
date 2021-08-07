@@ -40,6 +40,15 @@ export const getAnswer = async (
         url: `${process.env.api}/answers/${answerId}`,
         timeout: 30000, // 10 seconds timeout,
     }).then((response: AxiosResponse) => {
-        return response.data;
+        const data: AnsweredQueryResultItem = response.data;
+        return {
+            ...data,
+            media: {
+                ...data.media,
+                link: data.media
+                    ? Buffer.from(data.media.link, 'base64').toString()
+                    : '',
+            },
+        } as AnsweredQueryResultItem;
     });
 };
