@@ -68,7 +68,7 @@ const headCells = [
 ];
 
 type MediaRow = {
-    id: number;
+    id: number; //answerId
     user: string;
     question: string;
     answerer: string;
@@ -95,7 +95,7 @@ export const MediasComponent: FC = () => {
         }
     }, [getSiteSettingsAsync.state]);
 
-    const [mediaId, setMediaId] = useState<number | undefined>(undefined);
+    const [mediaId, setMediaId] = useState<number | undefined>(undefined); //answerId
 
     useEffect(() => {
         if (getMedias.state === 'resolved' && getMedias.result) {
@@ -104,7 +104,7 @@ export const MediasComponent: FC = () => {
                 .map((answer) => {
                     const id = answer?.media?.id as any;
                     return createData(
-                        id,
+                        answer.id,
                         answer.request.user.questionerExpert
                             ? answer.request.user.questionerExpert.name
                             : answer.request.user.questionerClient.name,
