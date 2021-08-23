@@ -54,6 +54,12 @@ const headCells = [
         disablePadding: false,
         label: 'Max Answer File Size',
     },
+    {
+        id: 'mediaPreviewPercent',
+        numeric: false,
+        disablePadding: false,
+        label: 'Media Preview Percent (%)',
+    },
 ];
 
 type SiteSettingsRow = {
@@ -64,6 +70,7 @@ type SiteSettingsRow = {
     answer_repurchase_rate: number;
     commission_rate: number;
     max_answer_size_mins: number;
+    media_preview_percent: number;
 };
 
 type SiteSettingsListProps = {
@@ -97,7 +104,8 @@ export const SiteSettingsList: FC<SiteSettingsListProps> = (props) => {
                     settings.max_time_to_answer_hrs,
                     settings.answer_repurchase_rate,
                     settings.commission_rate,
-                    settings.max_answer_size_mins
+                    settings.max_answer_size_mins,
+                    settings.media_preview_percent
                 )
             );
             setDataRows(tableData.filter((row) => row.id !== refundedItem));
@@ -111,7 +119,8 @@ export const SiteSettingsList: FC<SiteSettingsListProps> = (props) => {
         max_time_to_answer_hrs: number,
         answer_repurchase_rate: number,
         commission_rate: number,
-        max_answer_size_mins: number
+        max_answer_size_mins: number,
+        media_preview_percent: number
     ): SiteSettingsRow => {
         return {
             id,
@@ -121,6 +130,7 @@ export const SiteSettingsList: FC<SiteSettingsListProps> = (props) => {
             answer_repurchase_rate,
             commission_rate,
             max_answer_size_mins,
+            media_preview_percent,
         };
     };
 
@@ -161,6 +171,9 @@ export const SiteSettingsList: FC<SiteSettingsListProps> = (props) => {
                     </TableCell>
                     <TableCell align='left'>
                         {row.max_answer_size_mins}
+                    </TableCell>
+                    <TableCell align='left'>
+                        {row.media_preview_percent}
                     </TableCell>
                 </TableRow>
             );

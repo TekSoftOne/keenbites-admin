@@ -58,6 +58,14 @@ export const SettingsComponent: FC<SettingsComponentProps> = (props) => {
         isValid: true,
     });
 
+    const [
+        mediaPreviewPercentStatus,
+        setMediaPreviewPercentStatus,
+    ] = useState<SiteSettingStatus>({
+        value: props.data.media_preview_percent.toString(),
+        isValid: true,
+    });
+
     const handleSubmit = () => {
         if (!isFormValid) {
             return;
@@ -76,6 +84,9 @@ export const SettingsComponent: FC<SettingsComponentProps> = (props) => {
                 ),
                 commission_rate: parseFloat(commissionRateStatus.value),
                 max_answer_size_mins: parseInt(maxAnswerFileSizeStatus.value),
+                media_preview_percent: parseInt(
+                    mediaPreviewPercentStatus.value
+                ),
             };
             return updateSiteSettings(data);
         }
@@ -198,6 +209,25 @@ export const SettingsComponent: FC<SettingsComponentProps> = (props) => {
                             const val = event.target.value;
 
                             setMaxAnswerFileSizeStatus({
+                                value: val,
+                                isValid: validator.isNumeric(val),
+                            });
+                        }}
+                    />
+                    <TextField
+                        required
+                        label='Media Preview Percent (%)'
+                        defaultValue={mediaPreviewPercentStatus.value}
+                        helperText={
+                            mediaPreviewPercentStatus.isValid
+                                ? ''
+                                : 'Invalid Value'
+                        }
+                        error={!mediaPreviewPercentStatus.isValid}
+                        onChange={(event) => {
+                            const val = event.target.value;
+
+                            setMediaPreviewPercentStatus({
                                 value: val,
                                 isValid: validator.isNumeric(val),
                             });

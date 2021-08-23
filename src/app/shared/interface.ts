@@ -43,6 +43,7 @@ export type SettingsComponentResult = {
     answer_repurchase_rate: number;
     commission_rate: number;
     max_answer_size_mins: number;
+    media_preview_percent: number;
     createdAt: Date;
 };
 
@@ -52,6 +53,7 @@ export type SettingsComponentForm = {
     answer_repurchase_rate: number;
     commission_rate: number;
     max_answer_size_mins: number;
+    media_preview_percent: number;
 };
 
 export type SettingsComponentProps = {
